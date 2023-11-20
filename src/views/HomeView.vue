@@ -1,9 +1,9 @@
 <script setup>
-import Home from '../components/Home.vue'
+import Club from '../components/Club.vue'
 </script>
 
 <template>
   <main>
-    <Home />
+    <Club />
   </main>
 </template>

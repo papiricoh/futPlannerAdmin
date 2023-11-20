@@ -7,7 +7,9 @@
     name: 'Main',
     data() {
       return {
-        page: 'home'
+        page: 'club',
+
+        loginFase: true
         
       }
     },
@@ -26,19 +28,100 @@
       <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="">
       <h2>Username</h2>
     </div>
-    <div v-if="page == 'home'" class="headerButton buttonActive">Home</div>
-    <div v-else class="headerButton">Home</div>
-    <div class="headerButton">Club</div>
-    <div class="headerButton">Teams</div>
-    <div class="headerButton">Users</div>
+    <div v-if="page == 'club'" class="headerButtonActive">Club</div>
+    <div v-else @click="page = 'club'" class="headerButton">Club</div>
+    <div v-if="page == 'teams'" class="headerButtonActive">Teams</div>
+    <div v-else @click="page = 'teams'" class="headerButton">Teams</div>
+    <div v-if="page == 'users'" class="headerButtonActive">Users</div>
+    <div v-else @click="page = 'users'" class="headerButton">Users</div>
   </header>
 
   <RouterView  class="readerPage" />
+
+  <div v-if="loginFase" class="loginPage">
+    <div class="loginContainer">
+      <h1>FutPlanner</h1>
+      <h3>Admin Panel</h3>
+      <input placeholder="presidenteEjemploFC" type="email" name="email" id="">
+      <input placeholder="***************" type="password" name="" id="">
+      <div class="forgot">Forgot password</div>
+      <button>Enter</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-.buttonActive {
+.loginContainer > button {
+  width: 60%;
+  height: 3rem;
+  font-size: 2rem;
+  background-color: transparent;
+  border: 2px solid rgb(230, 230, 230);
+  border-radius: .4rem;
+  cursor: pointer;
+  transition: .4s;
+}
+.loginContainer > button:hover {
+  background-color: rgb(230, 230, 230);
+  transition: .4s;
+}
+.loginContainer > button:active {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  transition: .4s;
+}
+.loginContainer > .forgot {
+  text-decoration: none;
+  color: #166295;
+  cursor: pointer;
+}
+.loginContainer > input {
+  width: 80%;
+  height: 3rem;
+  font-size: 1rem;
+  border: 2px solid rgb(230, 230, 230);
+  border-radius: .4rem;
+}
+.loginContainer {
+  min-width: 30rem;
+  min-height: 40rem;
+  background-color: white;
+  border-radius: .4rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.loginPage {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.468);
+}
+.headerButtonActive{
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .4s;
+  font-weight: 500;
   background-color: rgba(0, 0, 0, 0.786);
+}
+.headerButtonActive:hover {
+  background-color: rgba(0, 0, 0, 0.486);
+  transition: .4s;
+}
+
+.headerButtonActive:active {
+  background-color: rgb(255, 255, 255);
+  color: black;
+  transition: .4s;
 }
 .headerButton {
   width: 100%;
