@@ -7,8 +7,8 @@
     name: 'Main',
     data() {
       return {
+        page: 'home'
         
-        titulo: 'Hola, Vue!'
       }
     },
     methods: {
@@ -26,7 +26,8 @@
       <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="">
       <h2>Username</h2>
     </div>
-    <div class="headerButton">Home</div>
+    <div v-if="page == 'home'" class="headerButton buttonActive">Home</div>
+    <div v-else class="headerButton">Home</div>
     <div class="headerButton">Club</div>
     <div class="headerButton">Teams</div>
     <div class="headerButton">Users</div>
@@ -36,6 +37,9 @@
 </template>
 
 <style scoped>
+.buttonActive {
+  background-color: rgba(0, 0, 0, 0.786);
+}
 .headerButton {
   width: 100%;
   height: 4rem;

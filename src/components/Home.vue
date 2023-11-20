@@ -22,7 +22,7 @@
 
 <template>
   <div class="home">
-    <div>{{titulo}}</div>
+    <div>HOME</div>
   </div>
 </template>
 
