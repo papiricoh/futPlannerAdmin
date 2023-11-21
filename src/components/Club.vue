@@ -50,7 +50,7 @@ import Loading from './loading/Loading.vue';
             this.user = this.getUser;
             await this.loadClub();
           }
-        }, 1000); // Chequea cada segundo
+        }, 1000);
       },
     },
     computed: {
@@ -59,6 +59,12 @@ import Loading from './loading/Loading.vue';
       },
       getUser() {
         return this.$store.getters.getUser;
+      },
+      getClubImage() {
+        if(!this.club.shield_url || this.club.shield_url == "") {
+          return "https://guessthefootballplayer.com/Js/placeholder3.png";
+        }
+        return this.club.shield_url;
       }
     },
     async mounted() {
@@ -73,11 +79,12 @@ import Loading from './loading/Loading.vue';
       <div v-if="loading">
         <Loading></Loading>
       </div>
-      <div v-else>
-        HOLA
+      <div v-else class="loadedResumeComponent">
+        <img :src="getClubImage" alt="">
+        <div>{{ club.club_name }}</div>
       </div>
     </div>
-    <div class="resumeComponent">
+    <div class="transparentBack">
       <div v-if="loading">
         <Loading></Loading>
       </div>
@@ -96,6 +103,30 @@ import Loading from './loading/Loading.vue';
 </template>
 
 <style scoped>
+.transparentBack {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loadedResumeComponent > div {
+  font-size: 2rem;
+}
+.loadedResumeComponent > img {
+  width: 35%;
+  aspect-ratio: 1/1;
+}
+.loadedResumeComponent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: space-around;
+}
 .resumeComponent {
   width: 100%;
   height: 100%;
@@ -117,6 +148,7 @@ import Loading from './loading/Loading.vue';
 .home {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 3fr;
   height: 100%;
   gap: 2rem;
   margin: 1rem;
