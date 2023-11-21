@@ -10,13 +10,16 @@ import Loading from './loading/Loading.vue';
         loading: true,
         user: {},
         club: {},
+
+
+        generalError: {error: ""},
       }
     },
     methods: {
       async loadClub() {
         const postData = {
-          user_id: this.user.id,
-          token: this.user.last_token_key,
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
         };
         try {
           const res = await fetch(`${this.$store.getters.getBaseURL}/club/owner`, {
@@ -34,12 +37,21 @@ import Loading from './loading/Loading.vue';
           
 
           this.club = data;
-          console.log(data);
+          this.loading = false;
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
         }
-      }
+      },
+      async checkUserLoaded() {
+        const intervalId = await setInterval(async () => {
+          if (this.getUser.id != 0) {
+            clearInterval(intervalId);
+            this.user = this.getUser;
+            await this.loadClub();
+          }
+        }, 1000); // Chequea cada segundo
+      },
     },
     computed: {
       logged() {
@@ -50,9 +62,7 @@ import Loading from './loading/Loading.vue';
       }
     },
     async mounted() {
-      this.user = this.$store.getters.getUser;
-      console.log(this.user);
-      await this.loadClub();
+      await this.checkUserLoaded();
     }
   };
 </script>

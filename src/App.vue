@@ -139,7 +139,8 @@ import Cookies from 'js-cookie';
   <header>
     <div class="userCard">
       <img :src="user.photo_url" alt="">
-      <h2>{{user.username}}</h2>
+      <h2>{{user.username.charAt(0).toUpperCase() + user.username.substring(1)}}</h2>
+      <h5>{{user.first_name}} {{user.last_name}}</h5>
     </div>
     <div v-if="page == 'club'" class="headerButtonActive">Club</div>
     <div v-else @click="page = 'club', changeRouter('club')" class="headerButton">Club</div>
@@ -156,7 +157,7 @@ import Cookies from 'js-cookie';
       <h1>FutPlanner</h1>
       <h3>Admin Panel</h3>
       <input v-model="formUsername" placeholder="presidenteEjemploFC" type="text" name="" id="">
-      <input v-model="formPassword" placeholder="***************" type="password" name="" id="">
+      <input v-model="formPassword" placeholder="··············" type="password" name="" id="">
       <div class="formError">{{ formError.error }}</div>
       <div class="forgot">Forgot password</div>
       <button @click="logIn()">Enter</button>
