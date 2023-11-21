@@ -9,12 +9,59 @@
       return {
         page: 'club',
 
-        loginFase: true
+        baseURL: "http://localhost:8080/api",
+
+        loginFase: true,
+
+        user: {
+          id: 0,
+          username: "Username",
+          last_token_key: ""
+        },
+
+
+        //LOGIN FORM
+        formUsername: "",
+        formPassword: "",
+
+        formError: "",
         
       }
     },
     methods: {
-      
+      async logIn() {
+        const postData = {
+          username: this.formUsername,
+          password: this.formPassword,
+        };
+        try {
+          const res = await fetch(`${this.baseURL}/logIn`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            this.formError = await res.json();//Asign error variable
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          if(data.user_type != "owner") {
+            console.error("User is not owner");
+            throw new Error(`User is not owner`);
+          }
+          this.postResult = JSON.stringify(data, null, 2);
+          
+
+          this.user = data;
+
+          this.loginFase = false;
+
+        } catch (err) {
+          this.postResult = err.message;
+        }
+      }
     },
     computed: {
       
@@ -26,7 +73,7 @@
   <header>
     <div class="userCard">
       <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="">
-      <h2>Username</h2>
+      <h2>{{user.username}}</h2>
     </div>
     <div v-if="page == 'club'" class="headerButtonActive">Club</div>
     <div v-else @click="page = 'club'" class="headerButton">Club</div>
@@ -42,10 +89,10 @@
     <div class="loginContainer">
       <h1>FutPlanner</h1>
       <h3>Admin Panel</h3>
-      <input placeholder="presidenteEjemploFC" type="email" name="email" id="">
-      <input placeholder="***************" type="password" name="" id="">
+      <input v-model="formUsername" placeholder="presidenteEjemploFC" type="text" name="" id="">
+      <input v-model="formPassword" placeholder="***************" type="password" name="" id="">
       <div class="forgot">Forgot password</div>
-      <button>Enter</button>
+      <button @click="logIn()">Enter</button>
     </div>
   </div>
 </template>
@@ -112,6 +159,7 @@
   transition: .4s;
   font-weight: 500;
   background-color: rgba(0, 0, 0, 0.786);
+  cursor: pointer;
 }
 .headerButtonActive:hover {
   background-color: rgba(0, 0, 0, 0.486);
@@ -131,16 +179,19 @@
   align-items: center;
   transition: .4s;
   font-weight: 500;
+  cursor: pointer;
 }
 .headerButton:hover {
   background-color: rgba(0, 0, 0, 0.486);
   transition: .4s;
+  cursor: pointer;
 }
 
 .headerButton:active {
   background-color: rgb(255, 255, 255);
   color: black;
   transition: .4s;
+  cursor: pointer;
 }
 .userCard {
   display: flex;
