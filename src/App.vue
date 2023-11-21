@@ -1,5 +1,5 @@
 <script setup>
-
+import Cookies from 'js-cookie';
 </script>
 
 <script>
@@ -25,10 +25,46 @@
         formPassword: "",
 
         formError: { error: ""},
+        generalError: { error: ""},
         
       }
     },
     methods: {
+      async autologin(user, token) {
+        const postData = {
+          username: user,
+          token: token,
+        };
+        try {
+          const res = await fetch(`${this.baseURL}/logIn/token`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            this.formError = await res.json();//Asign error variable
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          if(data.user_type != "owner") {
+            console.error("User is not owner");
+            throw new Error(`User is not owner`);
+          }
+          this.postResult = JSON.stringify(data, null, 2);
+          
+
+          this.user = data;
+
+          this.loginFase = false;
+
+        } catch (err) {
+          Cookies.remove('authUser');
+          Cookies.remove('authToken');
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async logIn() {
         const postData = {
           username: this.formUsername,
@@ -55,17 +91,26 @@
           
 
           this.user = data;
+          Cookies.set('authUser', data.username, { expires: 100, path: '' });
+          Cookies.set('authToken', data.last_token_key, { expires: 100, path: '' });
 
           this.loginFase = false;
 
         } catch (err) {
-          this.formError.error = "No conexion error: " + err.message;
+          this.generalError.error = "No conexion error: " + err.message;
         }
       }
     },
     computed: {
       
     },
+    async created() {
+      const user = Cookies.get('authUser');
+      const token = Cookies.get('authToken');
+      if (token && user) {
+        await this.autologin(user, token);
+      }
+    }
   };
 </script>
 
