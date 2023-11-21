@@ -8,15 +8,51 @@ import Loading from './loading/Loading.vue';
     data() {
       return {
         loading: true,
+        user: {},
+        club: {},
       }
     },
     methods: {
-      
+      async loadClub() {
+        const postData = {
+          user_id: this.user.id,
+          token: this.user.last_token_key,
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/club/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          this.postResult = JSON.stringify(data, null, 2);
+          
+
+          this.club = data;
+          console.log(data);
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      }
     },
     computed: {
       logged() {
         return this.$store.getters.getLogged;
+      },
+      getUser() {
+        return this.$store.getters.getUser;
       }
+    },
+    async mounted() {
+      this.user = this.$store.getters.getUser;
+      console.log(this.user);
+      await this.loadClub();
     }
   };
 </script>
@@ -39,8 +75,6 @@ import Loading from './loading/Loading.vue';
         HOLA
       </div>
     </div>
-    <div v-if="logged == true">TRUE</div>
-    <div v-if="logged == false">FALSE</div>
 
     <div v-if="loading" class="mainBody">
         <Loading></Loading>

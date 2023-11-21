@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
     name: 'Main',
     data() {
       return {
-        page: 'club',
+        page: 'home',
 
         baseURL: "http://localhost:8080/api",
 
@@ -16,6 +16,7 @@ import Cookies from 'js-cookie';
         user: {
           id: 0,
           username: "Username",
+          photo_url: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
           last_token_key: ""
         },
 
@@ -35,6 +36,9 @@ import Cookies from 'js-cookie';
       }
     },
     methods: {
+      changeRouter(router) {
+        this.$router.push('/'+ router);
+      },
       async autologin(user, token) {
         const postData = {
           username: user,
@@ -61,6 +65,11 @@ import Cookies from 'js-cookie';
           
 
           this.user = data;
+          this.$store.dispatch('setUserAction', data);
+
+          if(this.user.photo_url == "") {
+            this.user.photo_url = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+          }
 
           this.loginFase = false;
 
@@ -96,10 +105,17 @@ import Cookies from 'js-cookie';
           
 
           this.user = data;
+          this.$store.dispatch('setUserAction', data);
           Cookies.set('authUser', data.username, { expires: 100, path: '' });
           Cookies.set('authToken', data.last_token_key, { expires: 100, path: '' });
 
+          if(this.user.photo_url == "") {
+            this.user.photo_url = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+          }
+
           this.loginFase = false;
+          this.$router.push('/');
+
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
@@ -122,11 +138,11 @@ import Cookies from 'js-cookie';
 <template>
   <header>
     <div class="userCard">
-      <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="">
+      <img :src="user.photo_url" alt="">
       <h2>{{user.username}}</h2>
     </div>
     <div v-if="page == 'club'" class="headerButtonActive">Club</div>
-    <div v-else @click="page = 'club'" class="headerButton">Club</div>
+    <div v-else @click="page = 'club', changeRouter('club')" class="headerButton">Club</div>
     <div v-if="page == 'teams'" class="headerButtonActive">Teams</div>
     <div v-else @click="page = 'teams'" class="headerButton">Teams</div>
     <div v-if="page == 'users'" class="headerButtonActive">Users</div>
@@ -257,7 +273,7 @@ import Cookies from 'js-cookie';
   margin-bottom: 1rem;
 }
 .userCard > img {
-  max-width: 40%;
+  max-width: 50%;
   aspect-ratio: 1/1;
   border-radius: 100%;
 }
