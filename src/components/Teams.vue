@@ -10,6 +10,7 @@ import Loading from './loading/Loading.vue';
         loading: true,
         user: {},
         club: {},
+        teams: [],
 
 
         generalError: {error: ""},
@@ -37,7 +38,7 @@ import Loading from './loading/Loading.vue';
           
 
           this.club = data;
-          this.loading = false;
+          //this.loading = false;
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
@@ -75,7 +76,7 @@ import Loading from './loading/Loading.vue';
 
 <template>
   <div class="teams_body">
-    <div v-if="loading" class="mainBody">
+    <div v-if="loading" class="loading">
         <Loading></Loading>
     </div>
     <div v-else>
@@ -85,6 +86,21 @@ import Loading from './loading/Loading.vue';
 </template>
 
 <style scoped>
-
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.teams_body {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 </style>
 
