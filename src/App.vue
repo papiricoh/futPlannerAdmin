@@ -145,7 +145,7 @@ import Cookies from 'js-cookie';
     <div v-if="page == 'club'" class="headerButtonActive">Club</div>
     <div v-else @click="page = 'club', changeRouter('club')" class="headerButton">Club</div>
     <div v-if="page == 'teams'" class="headerButtonActive">Teams</div>
-    <div v-else @click="page = 'teams'" class="headerButton">Teams</div>
+    <div v-else @click="page = 'teams', changeRouter('teams')" class="headerButton">Teams</div>
     <div v-if="page == 'users'" class="headerButtonActive">Users</div>
     <div v-else @click="page = 'users'" class="headerButton">Users</div>
   </header>
