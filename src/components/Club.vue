@@ -1,5 +1,5 @@
 <script setup>
-
+import Loading from './loading/Loading.vue';
 </script>
 
 <script>
@@ -7,7 +7,7 @@
     name: 'Home',
     data() {
       return {
-        titulo: 'Hola, Vue!'
+        loading: true,
       }
     },
     methods: {
@@ -22,16 +22,28 @@
 <template>
   <div class="home">
     <div class="resumeComponent">
-      <div>
+      <div v-if="loading">
+        <Loading></Loading>
+      </div>
+      <div v-else>
         HOLA
       </div>
     </div>
     <div class="resumeComponent">
-      <div>
+      <div v-if="loading">
+        <Loading></Loading>
+      </div>
+      <div v-else>
         HOLA
       </div>
     </div>
-    <div class="mainBody">HOME</div>
+
+    <div v-if="loading" class="mainBody">
+        <Loading></Loading>
+    </div>
+    <div v-else>
+      HELLO
+    </div>
   </div>
 </template>
 
@@ -51,6 +63,8 @@
 .mainBody {
   grid-column: 1/3;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 .home {
   display: grid;
