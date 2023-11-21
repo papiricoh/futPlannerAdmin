@@ -29,6 +29,11 @@ import Cookies from 'js-cookie';
         
       }
     },
+    watch: {
+      loginFase(newValue, oldValue) {
+        this.$store.dispatch('setLoggedAction', !newValue);
+      }
+    },
     methods: {
       async autologin(user, token) {
         const postData = {

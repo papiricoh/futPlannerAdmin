@@ -14,8 +14,10 @@ import Loading from './loading/Loading.vue';
       
     },
     computed: {
-      
-    },
+      logged() {
+        return this.$store.getters.getLogged;
+      }
+    }
   };
 </script>
 
@@ -37,6 +39,8 @@ import Loading from './loading/Loading.vue';
         HOLA
       </div>
     </div>
+    <div v-if="logged == true">TRUE</div>
+    <div v-if="logged == false">FALSE</div>
 
     <div v-if="loading" class="mainBody">
         <Loading></Loading>
