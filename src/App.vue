@@ -24,7 +24,7 @@
         formUsername: "",
         formPassword: "",
 
-        formError: "",
+        formError: { error: ""},
         
       }
     },
@@ -59,7 +59,7 @@
           this.loginFase = false;
 
         } catch (err) {
-          this.postResult = err.message;
+          this.formError.error = "No conexion error: " + err.message;
         }
       }
     },
@@ -91,6 +91,7 @@
       <h3>Admin Panel</h3>
       <input v-model="formUsername" placeholder="presidenteEjemploFC" type="text" name="" id="">
       <input v-model="formPassword" placeholder="***************" type="password" name="" id="">
+      <div class="formError">{{ formError.error }}</div>
       <div class="forgot">Forgot password</div>
       <button @click="logIn()">Enter</button>
     </div>
@@ -98,6 +99,11 @@
 </template>
 
 <style scoped>
+.formError {
+  color: darkred;
+  font-weight: bold;
+  transition: .4s;
+}
 .loginContainer > button {
   width: 60%;
   height: 3rem;
