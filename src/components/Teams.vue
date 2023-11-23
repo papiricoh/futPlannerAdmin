@@ -17,6 +17,33 @@ import Loading from './loading/Loading.vue';
       }
     },
     methods: {
+      async loadTeams() {
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/teams/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          this.postResult = JSON.stringify(data, null, 2);
+          
+
+          this.teams = data;
+          this.loading = false;
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async loadClub() {
         const postData = {
           user_id: this.getUser.id,
@@ -38,7 +65,7 @@ import Loading from './loading/Loading.vue';
           
 
           this.club = data;
-          //this.loading = false;
+          await this.loadTeams();
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
@@ -80,12 +107,23 @@ import Loading from './loading/Loading.vue';
         <Loading></Loading>
     </div>
     <div v-else>
-      HELLO
+      <div class="table">
+          <div>
+            
+          </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.table {
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: .4rem;
+}
 .loading {
   width: 100%;
   height: 100%;
