@@ -112,21 +112,23 @@ import Loading from './loading/Loading.vue';
     <div v-if="loading" class="loading">
         <Loading></Loading>
     </div>
-    <div v-else>
+    <div class="general_body" v-else>
+      <div class="table_options">
+        <div></div>
+        <div class="option_button">Añadir Equipo</div>
+      </div>
       <div class="table">
           <div class="table_row">
             <div>Nombre</div>
             <div>Escudo</div>
-            <div>Categoria</div>
             <div>Sub-categoria</div>
-            <div>Editar?</div>
+            <div>Categoria</div>
           </div>
           <div v-for="team in teams" class="table_row selectable">
             <div>{{team.team_name}}</div>
             <img :src="generateShield(team.shield_url)" alt="">
-            <div>{{team.category.category_name}}</div>
             <div>{{team.sub_category.sub_category_name}}</div>
-            <div class="edit_button">Editar</div>
+            <div>{{team.category.category_name}}</div>
           </div>
       </div>
     </div>
@@ -134,6 +136,38 @@ import Loading from './loading/Loading.vue';
 </template>
 
 <style scoped>
+.option_button {
+  border-radius: .4rem;
+  border: 2px solid green;
+  padding: .4rem 1rem;
+  cursor: pointer;
+  transition: .25s;
+}
+.option_button:hover {
+  background-color: rgb(39, 160, 39);
+  color: white;
+  transition: .25s;
+}
+.option_button:active {
+  color: white;
+  background-color: green;
+  transition: .25s;
+}
+.table_options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: .4rem;
+  padding: 1rem;
+}
+.general_body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+}
 .selectable {
   cursor: pointer;
   transition: .25s;
@@ -161,7 +195,7 @@ import Loading from './loading/Loading.vue';
 }
 .table_row {
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr 2fr 2fr;
+  grid-template-columns: 2fr 1fr 2fr 2fr;
   padding: 1rem;
 }
 .table {
