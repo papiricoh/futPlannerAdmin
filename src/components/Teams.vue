@@ -80,6 +80,12 @@ import Loading from './loading/Loading.vue';
           }
         }, 1000);
       },
+      generateShield(shield_url) {
+        if(shield_url == null || shield_url == "") {
+          return "https://upload.wikimedia.org/wikipedia/commons/7/7d/Heraldic_shield_placeholder.png";
+        }
+        return shield_url;
+      }
     },
     computed: {
       logged() {
@@ -108,8 +114,19 @@ import Loading from './loading/Loading.vue';
     </div>
     <div v-else>
       <div class="table">
-          <div>
-            
+          <div class="table_row">
+            <div>Nombre</div>
+            <div>Escudo</div>
+            <div>Categoria</div>
+            <div>Sub-categoria</div>
+            <div>Editar?</div>
+          </div>
+          <div v-for="team in teams" class="table_row selectable">
+            <div>{{team.team_name}}</div>
+            <img :src="generateShield(team.shield_url)" alt="">
+            <div>{{team.category.category_name}}</div>
+            <div>{{team.sub_category.sub_category_name}}</div>
+            <div class="edit_button">Editar</div>
           </div>
       </div>
     </div>
@@ -117,12 +134,43 @@ import Loading from './loading/Loading.vue';
 </template>
 
 <style scoped>
+.selectable {
+  cursor: pointer;
+  transition: .25s;
+}
+.selectable:last-child {
+  border-bottom-right-radius: .4rem;
+  border-bottom-left-radius: .4rem;
+}
+.selectable:hover {
+  background-color: grey;
+  transition: .25s;
+}
+.selectable:active {
+  background-color: black;
+  color: white;
+  transition: .25s;
+}
+.table_row > img {
+  height: 1.4rem;
+  aspect-ratio: 1/1;
+}
+.table_row:first-child {
+  color: grey;
+  font-weight: bold;
+}
+.table_row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 2fr 2fr;
+  padding: 1rem;
+}
 .table {
   width: 100%;
   background-color: white;
   box-sizing: border-box;
-  padding: 1rem;
   border-radius: .4rem;
+  display: flex;
+  flex-direction: column;
 }
 .loading {
   width: 100%;
