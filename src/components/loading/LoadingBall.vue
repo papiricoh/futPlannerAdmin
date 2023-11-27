@@ -1,6 +1,6 @@
 <template>
     <div class="loading_container">
-        <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 72.371 72.372" xml:space="preserve">
+        <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 72.371 72.372" xml:space="preserve">
             <g>
                 <path d="M22.57,2.648c-4.489,1.82-8.517,4.496-11.971,7.949C7.144,14.051,4.471,18.08,2.65,22.568C0.892,26.904,0,31.486,0,36.186
                 c0,4.699,0.892,9.281,2.65,13.615c1.821,4.489,4.495,8.518,7.949,11.971c3.454,3.455,7.481,6.129,11.971,7.949
@@ -40,7 +40,7 @@
     align-items: center;
     justify-content: center;
     height: 3rem;
-    aspect-ratio: 1/1;
+    width: 3rem;
     animation: loading 2s forwards infinite;
 }
 
