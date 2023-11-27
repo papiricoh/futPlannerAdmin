@@ -15,7 +15,14 @@ import LoadingBall from './loading/LoadingBall.vue';
 
 
         generalError: {error: ""},
-        team_creator_mode: true,
+        team_creator_mode: false,
+
+        new_team_form: {
+          name: "",
+          shield_url: "",
+          category: "",
+          sub_category: ""
+        }
       }
     },
     methods: {
@@ -112,15 +119,53 @@ import LoadingBall from './loading/LoadingBall.vue';
 <template>
   <div v-if="team_creator_mode" class="team_creator_mode">
     <div class="team_creator_window">
-      <h3>Creador de Equipos</h3>
+      <div class="team_creator_container">
+        <h3>Creador de Equipos</h3>
+        <div @click="team_creator_mode = false" class="option_button">Salir</div>
+      </div>
       <div class="team_creator_container">
         <div class="team_creator_input">
           <h5>Nombre</h5>
-          <input placeholder="Nombre" type="new_team_name">
+          <input v-model="new_team_form.name" placeholder="Nombre" type="new_team_name">
         </div>
         <div class="team_creator_input">
           <h5>URL Escudo</h5>
-          <input placeholder="http://images.org/image.jpg" type="new_team_shield">
+          <input v-model="new_team_form.shield_url" placeholder="http://images.org/image.jpg" type="new_team_shield">
+        </div>
+      </div>
+      <div class="team_creator_container">
+        <div class="team_creator_input">
+          <h5>Categoria</h5>
+          <select v-model="new_team_form.category" name="team_creator_category" id="team_creator_category">
+            <option disabled value="">Selecciona</option>
+            <option value="Prebenjamin">Prebenjamin</option>
+            <option value="Benjamin">Benjamin</option>
+            <option value="Alevin">Alevin</option>
+            <option value="Infantil">Infantil</option>
+            <option value="Cadete">Cadete</option>
+            <option value="Juvenil">Juvenil</option>
+            <option value="Regional">Regional - Aficicionado</option>
+          </select>
+        </div>
+        <div class="team_creator_input">
+          <h5>Sub-Categoria</h5>
+          <select v-model="new_team_form.sub_category" name="team_creator_subcategory" id="team_creator_subcategory">
+            <option disabled value="">Selecciona</option>
+            <option v-if="new_team_form.category == 'Regional'" value="Preferente">Preferente</option>
+            <option v-if="new_team_form.category == 'Juvenil'" value="Division de Honor">Division de Honor</option>
+            <option v-if="new_team_form.category == 'Juvenil'" value="Liga Nacional">Liga Nacional</option>
+            <option value="1º">1º</option>
+            <option value="2º">2º</option>
+            <option v-if="new_team_form.category != 'Regional'" value="3º">3º</option>
+          </select>
+        </div>
+      </div>
+      <div class="team_creator_container">
+        <div class="team_creator_input">
+          <h5>Entrenador</h5>
+          <div class="profile_selector">
+            <div>+</div>
+          </div>
         </div>
       </div>
     </div>
@@ -132,7 +177,7 @@ import LoadingBall from './loading/LoadingBall.vue';
     <div class="general_body" v-else>
       <div class="table_options">
         <div></div>
-        <div class="option_button">Añadir Equipo</div>
+        <div @click="team_creator_mode = true" class="option_button">Añadir Equipo</div>
       </div>
       <div class="table">
           <div class="table_row">
@@ -153,6 +198,34 @@ import LoadingBall from './loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+.profile_selector {
+  width: 8rem;
+  height: 10rem;
+  padding: .4rem;
+  border-radius: 1rem;
+  border: 2px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .4s;
+}
+.profile_selector:hover {
+  background-color: rgba(0, 0, 0, 0.117);
+  transition: .4s;
+}
+.profile_selector:active {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: .2rem solid grey;
+  padding: .3rem;
+  transition: .4s;
+}
+.team_creator_input > select {
+  width: 90%;
+  height: 2rem;
+}
 .team_creator_input > input {
   width: 90%;
   height: 2rem;
@@ -168,11 +241,11 @@ import LoadingBall from './loading/LoadingBall.vue';
 }
 .team_creator_container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   gap: 3rem;
 }
-.team_creator_window > h3 {
+.team_creator_container:first-child {
   border-bottom: 1px solid grey;
   padding-bottom: 1rem;
   margin-bottom: 0;
@@ -180,7 +253,7 @@ import LoadingBall from './loading/LoadingBall.vue';
 .team_creator_window {
   box-sizing: border-box;
   width: 40%;
-  height: 50%;
+  min-height: 50%;
   background-color: white;
   border-radius: .4rem;
   padding: 1.4rem;
