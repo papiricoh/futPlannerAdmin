@@ -4,24 +4,24 @@ import LoadingBall from '../loading/LoadingBall.vue';
 
 <script>
   export default {
-    name: 'Home',
+    name: 'TrainerSelector',
     data() {
       return {
         loading: true,
         user: {},
         trainers: [],
 
-        generalError: "",
+        generalError: {},
       }
     },
     methods: {
-      async loadClub() {
+      async loadTrainers() {
         const postData = {
           user_id: this.getUser.id,
           token: this.getUser.last_token_key,
         };
         try {
-          const res = await fetch(`${this.$store.getters.getBaseURL}/club/owner`, {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/trainers/owner`, {
             method: "post",
             headers: {
               "Content-Type": "application/json"
@@ -35,8 +35,8 @@ import LoadingBall from '../loading/LoadingBall.vue';
           this.postResult = JSON.stringify(data, null, 2);
           
 
-          this.club = data;
-          await this.loadTeams();
+          this.trainers = data;
+          this.loading = false;
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
@@ -47,9 +47,18 @@ import LoadingBall from '../loading/LoadingBall.vue';
           if (this.getUser.id != 0) {
             clearInterval(intervalId);
             this.user = this.getUser;
-            //await this.loadClub();
+            await this.loadTrainers();
           }
         }, 1000);
+      },
+      renderPhoto(url) {
+        if(url == "" || url == null) {
+          return "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
+        }
+        return url;
+      },
+      sendTrainer(trainer) {
+        this.$emit('trainer', trainer);
       }
     },
     computed: {
@@ -70,13 +79,26 @@ import LoadingBall from '../loading/LoadingBall.vue';
   <div class="main_container">
     <div class="title">
       <h3>Entrenadores</h3>
-      <div class="button">Salir</div>
+      <div class="button" @click="sendTrainer(null)">Salir</div>
     </div>
     <div class="trainer_list">
-      <div class="trainer_card">
-        <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="">
-        <h4>Pablo Lopez</h4>
-        <div class="button">ASIGNAR</div>
+      <div v-if="loading" class="trainer_card">
+        <LoadingBall></LoadingBall>
+      </div>
+      <div v-if="loading" class="trainer_card">
+        <LoadingBall></LoadingBall>
+      </div>
+      <div v-if="loading" class="trainer_card">
+        <LoadingBall></LoadingBall>
+      </div>
+      <div v-if="loading" class="trainer_card">
+        <LoadingBall></LoadingBall>
+      </div>
+      <div v-if="!loading" v-for="trainer in trainers" class="trainer_card">
+        <img :src="renderPhoto(trainer.photo_url)" alt="">
+        <h4>{{trainer.first_name + " " + trainer.last_name}}</h4>
+        <div class="button" @click="sendTrainer(trainer)" v-if="trainer.team_id == null">ASIGNAR</div>
+        <div class="red_button button" v-else>ASIGNADO</div>
       </div>
     </div>
   </div>
@@ -130,6 +152,15 @@ import LoadingBall from '../loading/LoadingBall.vue';
   background-color: rgb(0, 138, 34);
   color: white;
   transition: .4s;
+}
+.red_button {
+  border: 2px solid red;
+}
+.red_button:hover {
+  background-color: transparent;
+}
+.red_button:active {
+  color: black;
 }
 .title {
   padding: 1rem;

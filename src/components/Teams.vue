@@ -17,13 +17,14 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 
         generalError: {error: ""},
         team_creator_mode: false,
-        trainer_selector_mode: true,
+        trainer_selector_mode: false,
 
         new_team_form: {
           name: "",
           shield_url: "",
           category: "",
-          sub_category: ""
+          sub_category: "",
+          trainer: {},
         }
       }
     },
@@ -96,6 +97,16 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           return "https://upload.wikimedia.org/wikipedia/commons/7/7d/Heraldic_shield_placeholder.png";
         }
         return shield_url;
+      },
+      renderPhoto(url) {
+        if(url == "" || url == null) {
+          return "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
+        }
+        return url;
+      },
+      setFormTrainer(trainer) {
+        this.new_team_form.trainer = trainer;
+        this.trainer_selector_mode = false;
       }
     },
     computed: {
@@ -120,7 +131,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 
 <template>
   <div v-if="trainer_selector_mode" class="background_trainer">
-    <TrainerSelector></TrainerSelector>
+    <TrainerSelector @trainer="setFormTrainer"></TrainerSelector>
   </div>
 
 
@@ -170,8 +181,12 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       <div class="team_creator_container">
         <div class="team_creator_input">
           <h5>Entrenador</h5>
-          <div class="profile_selector">
+          <div v-if="new_team_form.trainer == null || new_team_form.trainer.id == null" @click="trainer_selector_mode = true" class="profile_selector">
             <div>+</div>
+          </div>
+          <div @click="trainer_selector_mode = true" v-else class="profile_selector">
+            <img :src="renderPhoto(new_team_form.trainer.photo_url)" alt="">
+            <h4>{{new_team_form.trainer.first_name + " " + new_team_form.trainer.last_name}}</h4>
           </div>
         </div>
       </div>
@@ -208,6 +223,16 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 </template>
 
 <style scoped>
+.profile_selector > h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+.profile_selector > img {
+  width: 80%;
+  box-sizing: border-box;
+  aspect-ratio: 1/1;
+  border-radius: 1rem;
+}
 
 .background_trainer {
   background-color: rgba(0, 0, 0, 0.13);
@@ -232,6 +257,8 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
   cursor: pointer;
   font-weight: 600;
   transition: .4s;
+  flex-direction: column;
+  gap: 1rem;
 }
 .profile_selector:hover {
   background-color: rgba(0, 0, 0, 0.117);
