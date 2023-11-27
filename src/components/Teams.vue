@@ -1,6 +1,7 @@
 <script setup>
 import Loading from './loading/Loading.vue';
 import LoadingBall from './loading/LoadingBall.vue';
+import TrainerSelector from './subcomponents/TrainerSelector.vue';
 </script>
 
 <script>
@@ -16,6 +17,7 @@ import LoadingBall from './loading/LoadingBall.vue';
 
         generalError: {error: ""},
         team_creator_mode: false,
+        trainer_selector_mode: true,
 
         new_team_form: {
           name: "",
@@ -117,6 +119,11 @@ import LoadingBall from './loading/LoadingBall.vue';
 </script>
 
 <template>
+  <div v-if="trainer_selector_mode" class="background_trainer">
+    <TrainerSelector></TrainerSelector>
+  </div>
+
+
   <div v-if="team_creator_mode" class="team_creator_mode">
     <div class="team_creator_window">
       <div class="team_creator_container">
@@ -168,6 +175,9 @@ import LoadingBall from './loading/LoadingBall.vue';
           </div>
         </div>
       </div>
+      <div class="team_creator_container">
+        <div class="option_button" style="width: 100%; text-align: center;">CREAR</div>
+      </div>
     </div>
   </div>
   <div class="teams_body">
@@ -198,6 +208,17 @@ import LoadingBall from './loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+
+.background_trainer {
+  background-color: rgba(0, 0, 0, 0.13);
+  width: 88%;
+  height: 100%;
+  z-index: 4;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .profile_selector {
   width: 8rem;
   height: 10rem;
@@ -218,8 +239,6 @@ import LoadingBall from './loading/LoadingBall.vue';
 }
 .profile_selector:active {
   background-color: rgba(0, 0, 0, 0.3);
-  border: .2rem solid grey;
-  padding: .3rem;
   transition: .4s;
 }
 .team_creator_input > select {
