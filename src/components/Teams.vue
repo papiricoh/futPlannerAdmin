@@ -1,5 +1,6 @@
 <script setup>
 import Loading from './loading/Loading.vue';
+import LoadingBall from './loading/LoadingBall.vue';
 </script>
 
 <script>
@@ -14,6 +15,7 @@ import Loading from './loading/Loading.vue';
 
 
         generalError: {error: ""},
+        team_creator_mode: true,
       }
     },
     methods: {
@@ -108,9 +110,24 @@ import Loading from './loading/Loading.vue';
 </script>
 
 <template>
+  <div v-if="team_creator_mode" class="team_creator_mode">
+    <div class="team_creator_window">
+      <h3>Creador de Equipos</h3>
+      <div class="team_creator_container">
+        <div class="team_creator_input">
+          <h5>Nombre</h5>
+          <input placeholder="Nombre" type="new_team_name">
+        </div>
+        <div class="team_creator_input">
+          <h5>URL Escudo</h5>
+          <input placeholder="http://images.org/image.jpg" type="new_team_shield">
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="teams_body">
     <div v-if="loading" class="loading">
-        <Loading></Loading>
+        <LoadingBall></LoadingBall>
     </div>
     <div class="general_body" v-else>
       <div class="table_options">
@@ -136,6 +153,53 @@ import Loading from './loading/Loading.vue';
 </template>
 
 <style scoped>
+.team_creator_input > input {
+  width: 90%;
+  height: 2rem;
+}
+.team_creator_input > h5 {
+  color: rgb(90, 90, 90);
+}
+.team_creator_input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+.team_creator_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 3rem;
+}
+.team_creator_window > h3 {
+  border-bottom: 1px solid grey;
+  padding-bottom: 1rem;
+  margin-bottom: 0;
+}
+.team_creator_window {
+  box-sizing: border-box;
+  width: 40%;
+  height: 50%;
+  background-color: white;
+  border-radius: .4rem;
+  padding: 1.4rem;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 1rem;
+}
+.team_creator_mode {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.525);
+  z-index: 1;
+  box-sizing: border-box;
+  width: 88%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .option_button {
   border-radius: .4rem;
   border: 2px solid green;

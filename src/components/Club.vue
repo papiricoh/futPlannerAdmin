@@ -1,5 +1,6 @@
 <script setup>
 import Loading from './loading/Loading.vue';
+import LoadingBall from './loading/LoadingBall.vue';
 </script>
 
 <script>
@@ -77,7 +78,7 @@ import Loading from './loading/Loading.vue';
   <div class="home">
     <div class="resumeComponent">
       <div v-if="loading">
-        <Loading></Loading>
+        <LoadingBall></LoadingBall>
       </div>
       <div v-else class="loadedResumeComponent">
         <img :src="getClubImage" alt="">
@@ -86,7 +87,7 @@ import Loading from './loading/Loading.vue';
     </div>
     <div class="transparentBack">
       <div v-if="loading">
-        <Loading></Loading>
+        <LoadingBall></LoadingBall>
       </div>
       <div v-else>
         HOLA
@@ -94,7 +95,7 @@ import Loading from './loading/Loading.vue';
     </div>
 
     <div v-if="loading" class="mainBody">
-        <Loading></Loading>
+        <LoadingBall></LoadingBall>
     </div>
     <div v-else>
       HELLO
