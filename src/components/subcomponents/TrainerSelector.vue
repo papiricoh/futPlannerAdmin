@@ -11,6 +11,8 @@ import LoadingBall from '../loading/LoadingBall.vue';
         user: {},
         trainers: [],
 
+        searchText: "",
+
         generalError: {},
       }
     },
@@ -59,6 +61,15 @@ import LoadingBall from '../loading/LoadingBall.vue';
       },
       sendTrainer(trainer) {
         this.$emit('trainer', trainer);
+      },
+      searchedTrainers() {
+        var trainer_list = [];
+        for (const trainer of this.trainers) {
+          if((trainer.first_name + " " + trainer.last_name).toLowerCase().includes(this.searchText.toLowerCase())) {
+            trainer_list[trainer_list.length] = trainer;
+          }
+        }
+        return trainer_list;
       }
     },
     computed: {
@@ -79,6 +90,10 @@ import LoadingBall from '../loading/LoadingBall.vue';
   <div class="main_container">
     <div class="title">
       <h3>Entrenadores</h3>
+      <div class="search_container">
+        <div style="font-size: 1rem; font-weight: bold; color: rgb(82, 82, 82);">Buscar:</div>
+        <input type="text" v-model="searchText">
+      </div>
       <div class="button" @click="sendTrainer(null)">Salir</div>
     </div>
     <div class="trainer_list">
@@ -94,7 +109,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
       <div v-if="loading" class="trainer_card">
         <LoadingBall></LoadingBall>
       </div>
-      <div v-if="!loading" v-for="trainer in trainers" class="trainer_card">
+      <div v-if="!loading" v-for="trainer in searchedTrainers()" class="trainer_card">
         <img :src="renderPhoto(trainer.photo_url)" alt="">
         <h4>{{trainer.first_name + " " + trainer.last_name}}</h4>
         <div class="button" @click="sendTrainer(trainer)" v-if="trainer.team_id == null">ASIGNAR</div>
@@ -105,6 +120,16 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+.search_container > input {
+  border: 1px solid black;
+  border-radius: .2rem;
+  padding: .4rem;
+}
+.search_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .trainer_card > h4 {
   max-height: 5rem;
   overflow: hidden;
