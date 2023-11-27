@@ -144,11 +144,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       <div class="team_creator_container">
         <div class="team_creator_input">
           <h5>Nombre</h5>
-          <input v-model="new_team_form.name" placeholder="Nombre" type="new_team_name">
-        </div>
-        <div class="team_creator_input">
-          <h5>URL Escudo</h5>
-          <input v-model="new_team_form.shield_url" placeholder="http://images.org/image.jpg" type="new_team_shield">
+          <input v-model="new_team_form.name" style="width: 98%;" placeholder="Nombre" type="new_team_name">
         </div>
       </div>
       <div class="team_creator_container">
@@ -188,6 +184,10 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             <img :src="renderPhoto(new_team_form.trainer.photo_url)" alt="">
             <h4>{{new_team_form.trainer.first_name + " " + new_team_form.trainer.last_name}}</h4>
           </div>
+        </div>
+        <div class="team_creator_input">
+          <h5>URL Escudo</h5>
+          <input v-model="new_team_form.shield_url" placeholder="http://images.org/image.jpg" type="new_team_shield">
         </div>
       </div>
       <div class="team_creator_container">

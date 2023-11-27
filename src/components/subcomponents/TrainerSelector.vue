@@ -109,6 +109,9 @@ import LoadingBall from '../loading/LoadingBall.vue';
       <div v-if="loading" class="trainer_card">
         <LoadingBall></LoadingBall>
       </div>
+      <div v-if="loading" class="trainer_card">
+        <LoadingBall></LoadingBall>
+      </div>
       <div v-if="!loading" v-for="trainer in searchedTrainers()" class="trainer_card">
         <img :src="renderPhoto(trainer.photo_url)" alt="">
         <h4>{{trainer.first_name + " " + trainer.last_name}}</h4>
