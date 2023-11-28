@@ -13,6 +13,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         user: {},
         club: {},
         teams: [],
+        categories: [],
 
 
         generalError: {error: ""},
@@ -22,8 +23,8 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         new_team_form: {
           name: "",
           shield_url: "",
-          category: "",
-          sub_category: "",
+          category: null,
+          sub_category: null,
           trainer: {},
         }
       }
@@ -46,15 +47,30 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
           }
           const data = await res.json();
-          this.postResult = JSON.stringify(data, null, 2);
           
 
           this.teams = data;
+          this.loadCategories();
           this.loading = false;
 
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
         }
+      },
+      async loadCategories() {
+        fetch(`${this.$store.getters.getBaseURL}/categories`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.categories = data;
+          })
+          .catch(error => {
+            this.generalError.error = error;
+          });
       },
       async loadClub() {
         const postData = {
@@ -107,6 +123,14 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       setFormTrainer(trainer) {
         this.new_team_form.trainer = trainer;
         this.trainer_selector_mode = false;
+      },
+      getSubcategories(cat_id) {
+        for (let index = 0; index < this.categories.length; index++) {
+          if(this.categories[index].id == cat_id) {
+            return this.categories[index].sub_categories;
+          }
+        }
+        return null;
       }
     },
     computed: {
@@ -152,25 +176,14 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           <h5>Categoria</h5>
           <select v-model="new_team_form.category" name="team_creator_category" id="team_creator_category">
             <option disabled value="">Selecciona</option>
-            <option value="Prebenjamin">Prebenjamin</option>
-            <option value="Benjamin">Benjamin</option>
-            <option value="Alevin">Alevin</option>
-            <option value="Infantil">Infantil</option>
-            <option value="Cadete">Cadete</option>
-            <option value="Juvenil">Juvenil</option>
-            <option value="Regional">Regional - Aficicionado</option>
+            <option v-for="category in categories" :value="category">{{category.category_name}}</option>
           </select>
         </div>
-        <div class="team_creator_input">
+        <div v-if="new_team_form.category != null" class="team_creator_input">
           <h5>Sub-Categoria</h5>
           <select v-model="new_team_form.sub_category" name="team_creator_subcategory" id="team_creator_subcategory">
             <option disabled value="">Selecciona</option>
-            <option v-if="new_team_form.category == 'Regional'" value="Preferente">Preferente</option>
-            <option v-if="new_team_form.category == 'Juvenil'" value="Division de Honor">Division de Honor</option>
-            <option v-if="new_team_form.category == 'Juvenil'" value="Liga Nacional">Liga Nacional</option>
-            <option value="1º">1º</option>
-            <option value="2º">2º</option>
-            <option v-if="new_team_form.category != 'Regional'" value="3º">3º</option>
+            <option v-for="subCategory in getSubcategories(new_team_form.category.id)" :value="subCategory">{{subCategory.sub_category_name}}</option>
           </select>
         </div>
       </div>
