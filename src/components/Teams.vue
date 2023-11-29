@@ -22,6 +22,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 
         new_team_form: {
           name: "",
+          shield_file: null,
           shield_url: "",
           category: null,
           sub_category: null,
@@ -30,6 +31,25 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       }
     },
     methods: {
+      triggerFileInput() {
+        this.$refs.fileInput.click();
+      },
+      handleFileUpload(event) {
+        this.new_team_form.shield_url = "";
+        const uploadedFile = event.target.files[0];
+        this.new_team_form.shield_file = uploadedFile;
+        if (uploadedFile && uploadedFile.type.startsWith('image/')) {
+          this.createImageURL(uploadedFile);
+        }
+      },
+      createImageURL(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.new_team_form.shield_url = e.target.result;
+          console.log(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      },
       async loadTeams() {
         const postData = {
           user_id: this.getUser.id,
@@ -199,8 +219,10 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           </div>
         </div>
         <div class="team_creator_input">
-          <h5>URL Escudo</h5>
-          <input v-model="new_team_form.shield_url" placeholder="http://images.org/image.jpg" type="new_team_shield">
+          <h5>Escudo</h5>
+          <input ref="fileInput"  type="file" name="photo" @change="handleFileUpload" style="display: none;"/>
+          <img v-if="new_team_form.shield_url != ''" class="team_creator_img" :src="new_team_form.shield_url" alt="Imagen Previsualizada" @click="triggerFileInput" />
+          <div v-else class="team_creator_img" @click="triggerFileInput">+</div>
         </div>
       </div>
       <div class="team_creator_container">
@@ -236,6 +258,20 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 </template>
 
 <style scoped>
+.team_creator_img {
+  object-fit: cover;
+  height: 8rem;
+  width: 8rem;
+  margin: 1.4rem 0;
+  border: 2px solid grey;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: bold;
+  cursor: pointer;
+}
 .profile_selector > h4 {
   font-size: 1rem;
   margin: 0;
