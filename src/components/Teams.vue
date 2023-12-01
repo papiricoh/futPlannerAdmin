@@ -109,7 +109,6 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
           }
           const data = await res.json();
-          this.postResult = JSON.stringify(data, null, 2);
           
 
           this.club = data;
@@ -118,6 +117,29 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         } catch (err) {
           this.generalError.error = "No conexion error: " + err.message;
         }
+      },
+      async submitTeam() {
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          team_name: this.new_team_form.name,
+          team_shield: this.new_team_form.shield_file,
+          team_sub_category_id: this.new_team_form.sub_category,
+          team_trainer: this.new_team_form.trainer,
+        };
+        const formData = new FormData();
+        formData.append('teamPhoto', this.new_team_form.shield_file);
+
+        fetch(`${this.$store.getters.getBaseURL}/upload/team`, {
+          method: 'POST',
+          body: formData,
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        }).then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
       },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
@@ -226,7 +248,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         </div>
       </div>
       <div class="team_creator_container">
-        <div class="option_button" style="width: 100%; text-align: center;">CREAR</div>
+        <div class="option_button" @click="submitTeam()" style="width: 100%; text-align: center;">CREAR</div>
       </div>
     </div>
   </div>
