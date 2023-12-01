@@ -36,9 +36,10 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       },
       handleFileUpload(event) {
         this.new_team_form.shield_url = "";
+        this.new_team_form.shield_file = null;
         const uploadedFile = event.target.files[0];
-        this.new_team_form.shield_file = uploadedFile;
         if (uploadedFile && uploadedFile.type.startsWith('image/')) {
+          this.new_team_form.shield_file = uploadedFile;
           this.createImageURL(uploadedFile);
         }
       },
@@ -46,7 +47,6 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         const reader = new FileReader();
         reader.onload = (e) => {
           this.new_team_form.shield_url = e.target.result;
-          console.log(e.target.result);
         };
         reader.readAsDataURL(file);
       },
@@ -123,23 +123,29 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           user_id: this.getUser.id,
           token: this.getUser.last_token_key,
           team_name: this.new_team_form.name,
-          team_shield: this.new_team_form.shield_file,
-          team_sub_category_id: this.new_team_form.sub_category,
+          team_sub_category_id: this.new_team_form.sub_category.id,
           team_trainer: this.new_team_form.trainer,
         };
+        console.log(postData);
         const formData = new FormData();
-        formData.append('teamPhoto', this.new_team_form.shield_file);
+        if(this.new_team_form.shield_file != null) {
+          formData.append('teamPhoto', this.new_team_form.shield_file);
+        }else {
+          formData.append('teamPhoto', null);
+        }
+        formData.append('data', JSON.stringify(postData));
+        
 
         fetch(`${this.$store.getters.getBaseURL}/upload/team`, {
           method: 'POST',
           body: formData,
         }).then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        }).then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          }).then(data => console.log(data))
+          .catch(error => console.error('Error:', error));
       },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
@@ -154,6 +160,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         if(shield_url == null || shield_url == "") {
           return "https://upload.wikimedia.org/wikipedia/commons/7/7d/Heraldic_shield_placeholder.png";
         }
+        
         return shield_url;
       },
       renderPhoto(url) {
@@ -241,7 +248,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           </div>
         </div>
         <div class="team_creator_input">
-          <h5>Escudo</h5>
+          <h5>Escudo (Opcional)</h5>
           <input ref="fileInput"  type="file" name="photo" @change="handleFileUpload" style="display: none;"/>
           <img v-if="new_team_form.shield_url != ''" class="team_creator_img" :src="new_team_form.shield_url" alt="Imagen Previsualizada" @click="triggerFileInput" />
           <div v-else class="team_creator_img" @click="triggerFileInput">+</div>
@@ -440,8 +447,11 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
   transition: .25s;
 }
 .table_row > img {
-  height: 1.4rem;
-  aspect-ratio: 1/1;
+  object-fit: cover;
+  height: 1.2rem;
+  width: 1.2rem;
+  border: 1px solid grey;
+  border-radius: .4rem;
 }
 .table_row:first-child {
   color: grey;
