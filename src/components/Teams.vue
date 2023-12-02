@@ -165,7 +165,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
       },
       generateShield(shield_url) {
         if(shield_url == null || shield_url == "") {
-          return "https://upload.wikimedia.org/wikipedia/commons/7/7d/Heraldic_shield_placeholder.png";
+          return "https://www.svgrepo.com/show/51211/question-mark.svg";
         }
 
         return shield_url;

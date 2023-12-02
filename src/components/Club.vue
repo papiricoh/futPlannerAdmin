@@ -63,7 +63,7 @@ import LoadingBall from './loading/LoadingBall.vue';
       },
       getClubImage() {
         if(!this.club.shield_url || this.club.shield_url == "") {
-          return "https://guessthefootballplayer.com/Js/placeholder3.png";
+          return "https://www.svgrepo.com/show/51211/question-mark.svg";
         }
         return this.club.shield_url;
       }
