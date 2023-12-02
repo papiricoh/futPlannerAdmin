@@ -27,6 +27,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           category: null,
           sub_category: null,
           trainer: {},
+          loading: false
         }
       }
     },
@@ -126,7 +127,6 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           team_sub_category_id: this.new_team_form.sub_category.id,
           team_trainer: this.new_team_form.trainer,
         };
-        console.log(postData);
         const formData = new FormData();
         if(this.new_team_form.shield_file != null) {
           formData.append('teamPhoto', this.new_team_form.shield_file);
@@ -135,14 +135,21 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         }
         formData.append('data', JSON.stringify(postData));
         
+        this.new_team_form.loading = true;
 
-        fetch(`${this.$store.getters.getBaseURL}/upload/team`, {
+        await fetch(`${this.$store.getters.getBaseURL}/upload/team`, {
           method: 'POST',
           body: formData,
-        }).then(response => {
+        }).then(async response => {
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
+
+            this.team_creator_mode = false;
+            this.loading = true;
+            await this.loadTeams();
+            this.loading = false;
+            this.new_team_form.loading = false;
             return response.json();
           }).then(data => console.log(data))
           .catch(error => console.error('Error:', error));
@@ -160,7 +167,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         if(shield_url == null || shield_url == "") {
           return "https://upload.wikimedia.org/wikipedia/commons/7/7d/Heraldic_shield_placeholder.png";
         }
-        
+
         return shield_url;
       },
       renderPhoto(url) {
@@ -255,7 +262,8 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         </div>
       </div>
       <div class="team_creator_container">
-        <div class="option_button" @click="submitTeam()" style="width: 100%; text-align: center;">CREAR</div>
+        <div v-if="new_team_form.loading" class="option_button" >CARGANDO...</div>
+        <div v-else class="option_button" @click="submitTeam()" style="width: 100%; text-align: center;">CREAR</div>
       </div>
     </div>
   </div>
