@@ -293,7 +293,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
               <div>{{team.category.category_name}}</div>
             </div>
             <div v-if="team.id == selected_team" class="selected_team">
-              DWADHIWAIDWHAD
+              TODO: DETAIL TEAM COMPONENT
             </div>
           </div>
       </div>
