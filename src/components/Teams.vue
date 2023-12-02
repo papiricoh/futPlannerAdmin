@@ -281,16 +281,16 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             <div class="table_row">
               <div>Nombre</div>
               <div>Escudo</div>
-              <div>Sub-categoria</div>
               <div>Categoria</div>
+              <div>Sub-categoria</div>
             </div>
           </div>
           <div v-for="team in teams" :key="team.id" class="table_row_container">
             <div @click="select_team(team.id)" class="table_row selectable">
               <div>{{team.team_name}}</div>
               <img :src="getClubImage" alt="">
-              <div>{{team.sub_category.sub_category_name}}</div>
               <div>{{team.category.category_name}}</div>
+              <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id == selected_team" class="selected_team">
               TODO: DETAIL TEAM COMPONENT
