@@ -19,6 +19,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         generalError: {error: ""},
         team_creator_mode: false,
         trainer_selector_mode: false,
+        selected_team: null,
 
         new_team_form: {
           name: "",
@@ -68,7 +69,6 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
           }
           const data = await res.json();
-          
 
           this.teams = data;
           this.loadCategories();
@@ -163,13 +163,6 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           }
         }, 1000);
       },
-      generateShield(shield_url) {
-        if(shield_url == null || shield_url == "") {
-          return "https://www.svgrepo.com/show/51211/question-mark.svg";
-        }
-
-        return shield_url;
-      },
       renderPhoto(url) {
         if(url == "" || url == null) {
           return "/profile_placeholder.jpg";
@@ -187,6 +180,13 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
           }
         }
         return null;
+      },
+      select_team(id) {
+        if(this.selected_team === id) {
+          this.selected_team = null;
+        }else {
+          this.selected_team = id;
+        }
       }
     },
     computed: {
@@ -277,17 +277,24 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
         <div @click="team_creator_mode = true" class="option_button">Añadir Equipo</div>
       </div>
       <div class="table">
-          <div class="table_row">
-            <div>Nombre</div>
-            <div>Escudo</div>
-            <div>Sub-categoria</div>
-            <div>Categoria</div>
+          <div class="table_row_container">
+            <div class="table_row">
+              <div>Nombre</div>
+              <div>Escudo</div>
+              <div>Sub-categoria</div>
+              <div>Categoria</div>
+            </div>
           </div>
-          <div v-for="team in teams" class="table_row selectable">
-            <div>{{team.team_name}}</div>
-            <img :src="generateShield(team.shield_url)" alt="">
-            <div>{{team.sub_category.sub_category_name}}</div>
-            <div>{{team.category.category_name}}</div>
+          <div v-for="team in teams" :key="team.id" class="table_row_container">
+            <div @click="select_team(team.id)" class="table_row selectable">
+              <div>{{team.team_name}}</div>
+              <img :src="getClubImage" alt="">
+              <div>{{team.sub_category.sub_category_name}}</div>
+              <div>{{team.category.category_name}}</div>
+            </div>
+            <div v-if="team.id == selected_team" class="selected_team">
+              DWADHIWAIDWHAD
+            </div>
           </div>
       </div>
     </div>
@@ -295,6 +302,16 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
 </template>
 
 <style scoped>
+.selected_team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.table_row_container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 .team_creator_img {
   object-fit: cover;
   height: 8rem;
@@ -441,7 +458,11 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
   cursor: pointer;
   transition: .25s;
 }
-.selectable:last-child {
+.table_row_container:last-child > .selectable{
+  border-bottom-right-radius: .4rem;
+  border-bottom-left-radius: .4rem;
+}
+.table_row_container:last-child {
   border-bottom-right-radius: .4rem;
   border-bottom-left-radius: .4rem;
 }
@@ -461,7 +482,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
   border: 1px solid grey;
   border-radius: .4rem;
 }
-.table_row:first-child {
+.table_row_container:first-child {
   color: grey;
   font-weight: bold;
 }
