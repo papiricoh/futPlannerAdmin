@@ -16,7 +16,7 @@ import Cookies from 'js-cookie';
         user: {
           id: 0,
           username: "Username",
-          photo_url: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
+          photo_url: "/profile_placeholder.jpg",
           last_token_key: ""
         },
 
@@ -68,7 +68,7 @@ import Cookies from 'js-cookie';
           this.$store.dispatch('setUserAction', data);
 
           if(this.user.photo_url == "") {
-            this.user.photo_url = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            this.user.photo_url = "/profile_placeholder.jpg"
           }
 
           this.loginFase = false;
@@ -110,7 +110,7 @@ import Cookies from 'js-cookie';
           Cookies.set('authToken', data.last_token_key, { expires: 100, path: '' });
 
           if(this.user.photo_url == "") {
-            this.user.photo_url = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            this.user.photo_url = "/profile_placeholder.jpg"
           }
 
           this.loginFase = false;
