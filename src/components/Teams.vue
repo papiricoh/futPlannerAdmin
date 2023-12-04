@@ -128,42 +128,41 @@ import TeamData from './subcomponents/TeamData.vue';
           team_sub_category_id: this.new_team_form.sub_category.id,
           team_trainer: this.new_team_form.trainer,
         };
-        const formData = new FormData();
-        if(this.new_team_form.shield_file != null) {
-          formData.append('teamPhoto', this.new_team_form.shield_file);
-        }else {
-          formData.append('teamPhoto', null);
-        }
-        formData.append('data', JSON.stringify(postData));
         
         this.new_team_form.loading = true;
 
-        await fetch(`${this.$store.getters.getBaseURL}/upload/team`, {
-          method: 'POST',
-          body: formData,
-        }).then(async response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/newTeam/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+          this.team_creator_mode = false;
+          this.loading = true;
+          await this.loadTeams();
+          this.loading = false;
 
-            this.team_creator_mode = false;
-            this.loading = true;
-            await this.loadTeams();
-            this.loading = false;
+          this.new_team_form = {
+            name: "",
+            shield_file: null,
+            shield_url: "",
+            category: null,
+            sub_category: null,
+            trainer: {},
+            loading: false
+          }
+          
 
-            this.new_team_form = {
-              name: "",
-              shield_file: null,
-              shield_url: "",
-              category: null,
-              sub_category: null,
-              trainer: {},
-              loading: false
-            }
-
-            return response.json();
-          }).then(data => console.log(data))
-          .catch(error => console.error('Error:', error));
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
       },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
@@ -265,12 +264,12 @@ import TeamData from './subcomponents/TeamData.vue';
             <h4>{{new_team_form.trainer.first_name + " " + new_team_form.trainer.last_name}}</h4>
           </div>
         </div>
-        <div class="team_creator_input">
+        <!-- <div class="team_creator_input">
           <h5>Escudo (Opcional)</h5>
           <input ref="fileInput"  type="file" name="photo" @change="handleFileUpload" style="display: none;"/>
           <img v-if="new_team_form.shield_url != ''" class="team_creator_img" :src="new_team_form.shield_url" alt="Imagen Previsualizada" @click="triggerFileInput" />
           <div v-else class="team_creator_img" @click="triggerFileInput">+</div>
-        </div>
+        </div> -->
       </div>
       <div class="team_creator_container">
         <div v-if="new_team_form.loading" class="option_button" >CARGANDO...</div>
