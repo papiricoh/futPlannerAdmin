@@ -2,6 +2,7 @@
 import Loading from './loading/Loading.vue';
 import LoadingBall from './loading/LoadingBall.vue';
 import TrainerSelector from './subcomponents/TrainerSelector.vue';
+import TeamData from './subcomponents/TeamData.vue';
 </script>
 
 <script>
@@ -303,7 +304,7 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id == selected_team" class="selected_team">
-              TODO: DETAIL TEAM COMPONENT
+              <TeamData></TeamData>
             </div>
           </div>
       </div>
