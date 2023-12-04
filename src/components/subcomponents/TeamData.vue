@@ -46,7 +46,13 @@ import LoadingBall from '../loading/LoadingBall.vue';
   <div class="data_container" v-else>
     <div class="data_row">
       <div class="data_box">
-        
+        <div class="data_title">
+          <h3>NOMBRE</h3>
+          <h4>Categoria - Num</h4>
+        </div>
+        <div class="trainer_box">
+
+        </div>
       </div>
       <div class="data_box">
 
@@ -56,11 +62,22 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+.trainer_box {
+  width: 6rem;
+  height: 8rem;
+  border: 2px solid black;
+  border-radius: .4rem;
+}
+.data_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .data_box {
   min-height: 4rem;
   width: 100%;
   border-radius: .2rem;
-  padding: .4rem;
+  padding: 1rem;
   background-color: rgba(128, 128, 128, 0.2);
 }
 .data_row {
