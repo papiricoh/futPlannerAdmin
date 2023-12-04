@@ -149,7 +149,17 @@ import TrainerSelector from './subcomponents/TrainerSelector.vue';
             this.loading = true;
             await this.loadTeams();
             this.loading = false;
-            this.new_team_form.loading = false;
+
+            this.new_team_form = {
+              name: "",
+              shield_file: null,
+              shield_url: "",
+              category: null,
+              sub_category: null,
+              trainer: {},
+              loading: false
+            }
+
             return response.json();
           }).then(data => console.log(data))
           .catch(error => console.error('Error:', error));
