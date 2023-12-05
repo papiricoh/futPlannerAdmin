@@ -481,7 +481,7 @@ import TeamData from './subcomponents/TeamData.vue';
   transition: .25s;
 }
 .selectable:active {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.775);
   color: white;
   transition: .25s;
 }
