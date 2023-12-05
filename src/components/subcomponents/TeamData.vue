@@ -15,7 +15,9 @@ import LoadingBall from '../loading/LoadingBall.vue';
         team: {},
         trainer: {},
 
-        
+        generalError: {
+          error: ""
+        }
       }
     },
     methods: {
@@ -83,22 +85,69 @@ import LoadingBall from '../loading/LoadingBall.vue';
     <div class="data_row">
       <div class="data_box">
         <div class="data_title">
-          <h3>NOMBRE</h3>
-          <h4>Categoria - Num</h4>
+          <h3>{{team.team_name}}</h3>
+          <h4>{{team.subcategory}} - {{team.category}}</h4>
         </div>
-        <div class="trainer_box">
-          <img :src="renderTrainerPhoto(null)" alt="">
-          <div>NOMBRE APELLIDOS</div>
+        <div v-if="team.trainer != null" class="trainer_box">
+          <img :src="renderTrainerPhoto(team.trainer.photo_url)" alt="">
+          <div>
+            <div>Entrenador:</div>
+            <div style="font-size: x-large; font-weight: bold;">{{team.trainer.first_name + " " + team.trainer.last_name}}</div>
+          </div>
+        </div>
+        <div v-else style="justify-content: center;" class="trainer_box">
+          <div>Sin entrenador</div>
         </div>
       </div>
       <div class="data_box">
-
+        <div class="players_row">
+          <div>Numero</div>
+          <div>Nombre</div>
+          <div>Apellidos</div>
+          <div>Posición</div>
+        </div>
+        <div v-for="p in team.players" class="players_row selectable">
+          <div v-if="p.shirt_number">{{p.shirt_number}}</div>
+          <div v-esle>Sin numero</div>
+          <div>{{p.first_name}}</div>
+          <div>{{p.last_name}}</div>
+          <div v-if="p.position">{{p.position}}</div>
+          <div v-esle>Sin asignar</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.players_row:first-child {
+  border-top-right-radius: .2rem;
+  border-top-left-radius: .2rem;
+}
+.players_row:last-child {
+  border-bottom-right-radius: .2rem;
+  border-bottom-left-radius: .2rem;
+}
+.players_row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 1rem .4rem;
+  background-color: rgba(128, 128, 128, 0.3);
+}
+
+.players_row:nth-child(2n) {
+  background-color: rgba(128, 128, 128, 0.12);
+}
+.selectable {
+  cursor: pointer;
+}
+.selectable:hover {
+  background-color: rgba(128, 128, 128, 0.475);
+}
+.selectable:active {
+  background-color: rgba(0, 0, 0, 0.775);
+  color: white;
+}
 .trainer_box > div {
   overflow-x: hidden;
 }
@@ -129,6 +178,8 @@ import LoadingBall from '../loading/LoadingBall.vue';
   border-radius: .2rem;
   padding: 1rem;
   background-color: rgba(128, 128, 128, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 .data_row {
   width: 100%;
@@ -136,7 +187,6 @@ import LoadingBall from '../loading/LoadingBall.vue';
   grid: 1rem;
   min-height: 4rem;
   display: flex;
-  align-items: center;
   justify-content: stretch;
   gap: 1rem;
 }
