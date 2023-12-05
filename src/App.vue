@@ -285,9 +285,9 @@ header {
   width: 100%;
   overflow: auto;
   word-break: break-all;
-  background-color: rgb(50, 50, 50);
+  background-color: rgb(45, 76, 25);
   box-shadow: 3px 0 8px rgba(0, 0, 0, 0.486);
-  color: rgb(200, 200, 200);
+  color: rgb(255, 255, 255);
 }
 
 </style>
