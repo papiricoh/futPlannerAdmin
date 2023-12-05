@@ -5,17 +5,53 @@ import LoadingBall from '../loading/LoadingBall.vue';
 <script>
   export default {
     name: 'TeamData',
+    props: {
+      team_id: Number,
+    },
     data() {
       return {
         loading: true,
         user: {},
+        team: {},
+        trainer: {},
 
         
       }
     },
     methods: {
+      renderTrainerPhoto(photo) {
+        if(photo == null || photo == "") {
+          return "/profile_placeholder.jpg"
+        }
+        return photo;
+      },
       async loadTeamData() {
-        this.loading = false;
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          team_id: this.team_id
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/fullTeam/owner/id`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+
+          this.team = data;
+          this.loading = false;
+          await this.loadTeams();
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
       },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
@@ -51,7 +87,8 @@ import LoadingBall from '../loading/LoadingBall.vue';
           <h4>Categoria - Num</h4>
         </div>
         <div class="trainer_box">
-
+          <img :src="renderTrainerPhoto(null)" alt="">
+          <div>NOMBRE APELLIDOS</div>
         </div>
       </div>
       <div class="data_box">
@@ -62,11 +99,24 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </template>
 
 <style scoped>
-.trainer_box {
-  width: 6rem;
+.trainer_box > div {
+  overflow-x: hidden;
+}
+.trainer_box > img {
+  object-fit: cover;
+  width: 8rem;
   height: 8rem;
-  border: 2px solid black;
   border-radius: .4rem;
+}
+.trainer_box {
+  min-width: 6rem;
+  min-height: 8rem;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: .4rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  gap: 2rem;
 }
 .data_title {
   display: flex;

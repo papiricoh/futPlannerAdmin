@@ -303,7 +303,7 @@ import TeamData from './subcomponents/TeamData.vue';
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id == selected_team" class="selected_team">
-              <TeamData></TeamData>
+              <TeamData :team_id="team.id"></TeamData>
             </div>
           </div>
       </div>
