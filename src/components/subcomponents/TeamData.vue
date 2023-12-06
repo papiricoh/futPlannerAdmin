@@ -108,11 +108,11 @@ import LoadingBall from '../loading/LoadingBall.vue';
         </div>
         <div v-for="p in team.players" class="players_row selectable">
           <div v-if="p.shirt_number">{{p.shirt_number}}</div>
-          <div v-esle>Sin numero</div>
+          <div v-else>Sin numero</div>
           <div>{{p.first_name}}</div>
           <div>{{p.last_name}}</div>
           <div v-if="p.position">{{p.position}}</div>
-          <div v-esle>Sin asignar</div>
+          <div v-else>Sin asignar</div>
         </div>
       </div>
     </div>
