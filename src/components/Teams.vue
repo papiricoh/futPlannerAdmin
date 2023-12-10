@@ -3,6 +3,7 @@ import Loading from './loading/Loading.vue';
 import LoadingBall from './loading/LoadingBall.vue';
 import TrainerSelector from './subcomponents/TrainerSelector.vue';
 import TeamData from './subcomponents/TeamData.vue';
+import PlayerData from './subcomponents/PlayerData.vue';
 </script>
 
 <script>
@@ -22,6 +23,9 @@ import TeamData from './subcomponents/TeamData.vue';
         trainer_selector_mode: false,
         selected_team: null,
 
+        player_data_mode: false,
+        player_editor_player: null,
+
         new_team_form: {
           name: "",
           shield_file: null,
@@ -36,6 +40,13 @@ import TeamData from './subcomponents/TeamData.vue';
     methods: {
       triggerFileInput() {
         this.$refs.fileInput.click();
+      },
+      async restartTeamWindow() {
+        const team_id = this.selected_team;
+        this.selected_team = null;
+        this.player_data_mode = false;
+        await new Promise(resolve => setTimeout(resolve, 200));
+        this.selected_team = team_id;
       },
       handleFileUpload(event) {
         this.new_team_form.shield_url = "";
@@ -191,6 +202,10 @@ import TeamData from './subcomponents/TeamData.vue';
         }
         return null;
       },
+      editPlayer(player) {
+        this.player_editor_player = player;
+        this.player_data_mode = true;
+      },
       select_team(id) {
         if(this.selected_team === id) {
           this.selected_team = null;
@@ -220,6 +235,9 @@ import TeamData from './subcomponents/TeamData.vue';
 </script>
 
 <template>
+  <div v-if="player_data_mode">
+    <PlayerData @exitPlayer="restartTeamWindow" :player="player_editor_player"></PlayerData>
+  </div>
   <div v-if="trainer_selector_mode" class="background_trainer">
     <TrainerSelector @trainer="setFormTrainer"></TrainerSelector>
   </div>
@@ -302,8 +320,8 @@ import TeamData from './subcomponents/TeamData.vue';
               <div>{{team.category.category_name}}</div>
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
-            <div v-if="team.id == selected_team" class="selected_team">
-              <TeamData :team_id="team.id"></TeamData>
+            <div v-if="team.id === selected_team" class="selected_team">
+              <TeamData @editPlayer="editPlayer" :team_id="team.id"></TeamData>
             </div>
           </div>
       </div>

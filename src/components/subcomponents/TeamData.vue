@@ -20,7 +20,17 @@ import LoadingBall from '../loading/LoadingBall.vue';
         }
       }
     },
+    watch: {
+      
+    },
     methods: {
+      async restart() {
+        this.loading = true;
+        await this.loadTeamData();
+      },
+      editPlayer(player) {
+        this.$emit('editPlayer', player);
+      },
       renderTrainerPhoto(photo) {
         if(photo == null || photo == "") {
           return "/profile_placeholder.jpg"
@@ -100,13 +110,16 @@ import LoadingBall from '../loading/LoadingBall.vue';
         </div>
       </div>
       <div class="data_box">
-        <div class="players_row">
+        <div class="data_heading">
+          <div class="button">Añadir Jugador</div>
+        </div>
+        <div class="players_row" style="font-weight: bold;">
           <div>Numero</div>
           <div>Nombre</div>
           <div>Apellidos</div>
           <div>Posición</div>
         </div>
-        <div v-for="p in team.players" class="players_row selectable">
+        <div @click="editPlayer(p)" v-for="p in team.players" class="players_row selectable">
           <div v-if="p.shirt_number">{{p.shirt_number}}</div>
           <div v-else>Sin numero</div>
           <div>{{p.first_name}}</div>
@@ -120,6 +133,29 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+.data_heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button {
+  padding: .6rem 1.2rem;
+  border: 2px solid darkgreen;
+  margin: .6rem;
+  border-radius: .4rem;
+  cursor: pointer;
+  transition: .4s;
+  font-weight: bold;
+}
+.button:hover {
+  background-color: rgba(5, 59, 0, 0.116);
+  transition: .4s;
+}
+.button:active {
+  background-color: rgba(5, 59, 0, 0.816);
+  transition: .4s;
+  color: white;
+}
 .players_row:first-child {
   border-top-right-radius: .2rem;
   border-top-left-radius: .2rem;
