@@ -61,6 +61,31 @@ import LoadingBall from '../loading/LoadingBall.vue';
           this.generalError.error = "No conexion error: " + err.message;
         }
       },
+      async updatePlayer() {
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          player: this.form_data
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/updatePlayer/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+          this.exit();
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
           if (this.getUser.id != 0) {
@@ -134,7 +159,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
         </div>
         <div class="form_row">
           <div @click="unasignPlayer" class="button red_button">Eliminar Del Equipo</div>
-          <div class="button">Modificar Jugador</div>
+          <div @click="updatePlayer" class="button">Modificar Jugador</div>
         </div>
       </div>
     </div>
