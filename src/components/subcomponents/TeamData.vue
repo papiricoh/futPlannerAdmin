@@ -72,7 +72,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
             this.user = this.getUser;
             await this.loadTeamData();
           }
-        }, 1000);
+        }, 500);
       },
     },
     computed: {
@@ -103,10 +103,13 @@ import LoadingBall from '../loading/LoadingBall.vue';
           <div>
             <div>Entrenador:</div>
             <div style="font-size: x-large; font-weight: bold;">{{team.trainer.first_name + " " + team.trainer.last_name}}</div>
+            <br>
+            <div class="remove_button">Destituir</div>
           </div>
         </div>
-        <div v-else style="justify-content: center;" class="trainer_box">
-          <div>Sin entrenador</div>
+        <div v-else style="justify-content: center;" class="trainer_box_empty">
+          <div style="font-size: 1.2rem;">Sin entrenador</div>
+          <div class="add_trainer">Añadir</div>
         </div>
       </div>
       <div class="data_box">
@@ -133,6 +136,9 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </template>
 
 <style scoped>
+::selection {
+  color: inherit;
+}
 .data_heading {
   display: flex;
   align-items: center;
@@ -148,7 +154,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
   font-weight: bold;
 }
 .button:hover {
-  background-color: rgba(5, 59, 0, 0.116);
+  background-color: #2E7D32;
   transition: .4s;
 }
 .button:active {
@@ -176,13 +182,17 @@ import LoadingBall from '../loading/LoadingBall.vue';
 }
 .selectable {
   cursor: pointer;
+  transition: .2s;
 }
 .selectable:hover {
-  background-color: rgba(128, 128, 128, 0.475);
+  background-color: #2E7D32;
+  color: #E8F5E9;
+  transition: .2s;
 }
 .selectable:active {
   background-color: rgba(0, 0, 0, 0.775);
   color: white;
+  transition: .2s;
 }
 .trainer_box > div {
   overflow-x: hidden;
@@ -202,6 +212,17 @@ import LoadingBall from '../loading/LoadingBall.vue';
   align-items: center;
   padding: 1rem;
   gap: 2rem;
+}
+.trainer_box_empty {
+  min-width: 6rem;
+  min-height: 8rem;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: .4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: .4rem;
 }
 .data_title {
   display: flex;
@@ -237,6 +258,36 @@ import LoadingBall from '../loading/LoadingBall.vue';
 }
 .loading_padding {
   padding: 1rem;
+}
+.add_trainer {
+  cursor: pointer;
+  transition: .3s;
+}
+.add_trainer:hover {
+  color: #1B5E20;
+  font-weight: bold;
+  transition: .3s;
+  text-decoration: underline;
+}
+.add_trainer:active {
+  color: black;
+  font-weight: bold;
+  transition: .3s;
+}
+.remove_button {
+  cursor: pointer;
+  transition: .3s;
+}
+.remove_button:hover {
+  color: #C62828;
+  font-weight: bold;
+  transition: .3s;
+  text-decoration: underline;
+}
+.remove_button:active {
+  color: black;
+  font-weight: bold;
+  transition: .3s;
 }
 </style>
 

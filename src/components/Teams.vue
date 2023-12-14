@@ -22,9 +22,10 @@ import PlayerData from './subcomponents/PlayerData.vue';
         team_creator_mode: false,
         trainer_selector_mode: false,
         selected_team: null,
-
+        
         player_data_mode: false,
         player_editor_player: null,
+        team_trainer_selector_mode: false,
 
         new_team_form: {
           name: "",
@@ -182,7 +183,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
             this.user = this.getUser;
             await this.loadClub();
           }
-        }, 1000);
+        }, 500);
       },
       renderPhoto(url) {
         if(url == "" || url == null) {
@@ -193,6 +194,9 @@ import PlayerData from './subcomponents/PlayerData.vue';
       setFormTrainer(trainer) {
         this.new_team_form.trainer = trainer;
         this.trainer_selector_mode = false;
+      },
+      setTeamTrainer(trainer) {
+        this.team_trainer_selector_mode = false;
       },
       getSubcategories(cat_id) {
         for (let index = 0; index < this.categories.length; index++) {
@@ -240,6 +244,9 @@ import PlayerData from './subcomponents/PlayerData.vue';
   </div>
   <div v-if="trainer_selector_mode" class="background_trainer">
     <TrainerSelector @trainer="setFormTrainer"></TrainerSelector>
+  </div>
+  <div v-if="team_trainer_selector_mode" class="background_trainer">
+    <TrainerSelector @trainer="setTeamTrainer"></TrainerSelector>
   </div>
 
 
@@ -495,7 +502,8 @@ import PlayerData from './subcomponents/PlayerData.vue';
   border-bottom-left-radius: .4rem;
 }
 .selectable:hover {
-  background-color: grey;
+  background-color: #2E7D32;
+  color: #E8F5E9;
   transition: .25s;
 }
 .selectable:active {

@@ -94,7 +94,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
             this.form_data = JSON.parse(JSON.stringify(this.player));
             this.loading = false
           }
-        }, 1000);
+        }, 400);
       },
     },
     computed: {
