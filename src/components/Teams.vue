@@ -200,9 +200,36 @@ import PlayerData from './subcomponents/PlayerData.vue';
         this.new_team_form.trainer = trainer;
         this.trainer_selector_mode = false;
       },
-      setTeamTrainer() {
-        //TODO FETCH WITH this.team_trainer_team
-        this.team_trainer_selector_mode = false;
+      async setTeamTrainer() {
+        if(this.team_trainer_team == null) {
+          const team_id = this.selected_team;
+          this.selected_team = null;
+          this.team_trainer_selector_mode = false;
+          await new Promise(resolve => setTimeout(resolve, 200));
+          this.selected_team = team_id;
+          return;
+        }
+        //FETCH WITH this.team_trainer_team
+        await fetch(`${this.$store.getters.getBaseURL}/changeTrainerTeam/owner`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            user_id: this.getUser.id,
+            token: this.getUser.last_token_key,
+            trainer: this.team_trainer_team,
+            team_id: this.selected_team
+          }),
+        }).then(async response => response.json())
+        .then(async data => {
+          const team_id = this.selected_team;
+          this.selected_team = null;
+          this.team_trainer_selector_mode = false;
+          await new Promise(resolve => setTimeout(resolve, 200));
+          this.selected_team = team_id;
+          
+        });
       },
       getSubcategories(cat_id) {
         for (let index = 0; index < this.categories.length; index++) {
