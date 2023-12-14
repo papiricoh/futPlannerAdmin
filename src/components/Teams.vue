@@ -26,6 +26,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
         player_data_mode: false,
         player_editor_player: null,
         team_trainer_selector_mode: false,
+        team_trainer_team: {},
 
         new_team_form: {
           name: "",
@@ -41,6 +42,10 @@ import PlayerData from './subcomponents/PlayerData.vue';
     methods: {
       triggerFileInput() {
         this.$refs.fileInput.click();
+      },
+      openTeamTrainers(team) {
+        this.team_trainer_team = team;
+        this.team_trainer_selector_mode = true;
       },
       async restartTeamWindow() {
         const team_id = this.selected_team;
@@ -195,7 +200,8 @@ import PlayerData from './subcomponents/PlayerData.vue';
         this.new_team_form.trainer = trainer;
         this.trainer_selector_mode = false;
       },
-      setTeamTrainer(trainer) {
+      setTeamTrainer() {
+        //TODO FETCH WITH this.team_trainer_team
         this.team_trainer_selector_mode = false;
       },
       getSubcategories(cat_id) {
@@ -328,7 +334,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id === selected_team" class="selected_team">
-              <TeamData @editPlayer="editPlayer" :team_id="team.id"></TeamData>
+              <TeamData @openTeamTrainers="openTeamTrainers" @editPlayer="editPlayer" :team_id="team.id"></TeamData>
             </div>
           </div>
       </div>

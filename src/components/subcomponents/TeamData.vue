@@ -37,6 +37,9 @@ import LoadingBall from '../loading/LoadingBall.vue';
         }
         return photo;
       },
+      openTrainers() {
+        this.$emit('openTeamTrainers', this.team);
+      },
       async loadTeamData() {
         const postData = {
           user_id: this.getUser.id,
@@ -109,7 +112,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
         </div>
         <div v-else style="justify-content: center;" class="trainer_box_empty">
           <div style="font-size: 1.2rem;">Sin entrenador</div>
-          <div class="add_trainer">Añadir</div>
+          <div @click="openTrainers()" class="add_trainer">Añadir</div>
         </div>
       </div>
       <div class="data_box">
@@ -130,6 +133,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
           <div v-if="p.position">{{p.position}}</div>
           <div v-else>Sin asignar</div>
         </div>
+        <div v-if="team.players == null" style="text-align: center; padding: 1rem;">Sin jugadores</div>
       </div>
     </div>
   </div>
