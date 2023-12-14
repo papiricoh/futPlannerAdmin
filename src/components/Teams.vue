@@ -361,7 +361,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id === selected_team" class="selected_team">
-              <TeamData @openTeamTrainers="openTeamTrainers" @editPlayer="editPlayer" :team_id="team.id"></TeamData>
+              <TeamData @restartTeamWindow="restartTeamWindow" @openTeamTrainers="openTeamTrainers" @editPlayer="editPlayer" :team_id="team.id"></TeamData>
             </div>
           </div>
       </div>

@@ -13,7 +13,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
         loading: true,
         user: {},
         team: {},
-        trainer: {},
+        trainer: null,
 
         generalError: {
           error: ""
@@ -68,6 +68,35 @@ import LoadingBall from '../loading/LoadingBall.vue';
           this.generalError.error = "No conexion error: " + err.message;
         }
       },
+      async remove_trainer() {
+        if(this.team.trainer == null ) {
+          return;
+        }
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          trainer: this.team.trainer
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/removeTrainerFromTeam/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+
+          this.$emit('restartTeamWindow');
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
           if (this.getUser.id != 0) {
@@ -107,7 +136,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
             <div>Entrenador:</div>
             <div style="font-size: x-large; font-weight: bold;">{{team.trainer.first_name + " " + team.trainer.last_name}}</div>
             <br>
-            <div class="remove_button">Destituir</div>
+            <div @click="remove_trainer()" class="remove_button">Destituir</div>
           </div>
         </div>
         <div v-else style="justify-content: center;" class="trainer_box_empty">
