@@ -4,6 +4,7 @@ import LoadingBall from './loading/LoadingBall.vue';
 import TrainerSelector from './subcomponents/TrainerSelector.vue';
 import TeamData from './subcomponents/TeamData.vue';
 import PlayerData from './subcomponents/PlayerData.vue';
+import PlayerSelector from './subcomponents/PlayerSelector.vue';
 </script>
 
 <script>
@@ -27,6 +28,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
         player_editor_player: null,
         team_trainer_selector_mode: false,
         team_trainer_team: {},
+        team_player_selector_mode: true, //DEBUG
 
         new_team_form: {
           name: "",
@@ -51,6 +53,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
         const team_id = this.selected_team;
         this.selected_team = null;
         this.player_data_mode = false;
+        this.team_player_selector_mode = false;
         await new Promise(resolve => setTimeout(resolve, 200));
         this.selected_team = team_id;
       },
@@ -281,6 +284,9 @@ import PlayerData from './subcomponents/PlayerData.vue';
   <div v-if="team_trainer_selector_mode" class="background_trainer">
     <TrainerSelector @trainer="setTeamTrainer"></TrainerSelector>
   </div>
+  <div v-if="team_player_selector_mode" class="background_trainer">
+    <PlayerSelector @exitPlayer="restartTeamWindow"></PlayerSelector>
+  </div>
 
 
   <div v-if="team_creator_mode" class="team_creator_mode">
@@ -406,7 +412,7 @@ import PlayerData from './subcomponents/PlayerData.vue';
 }
 
 .background_trainer {
-  background-color: rgba(0, 0, 0, 0.13);
+  background-color: rgba(0, 0, 0, 0.33);
   width: 88%;
   height: 100%;
   z-index: 4;
