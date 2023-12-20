@@ -156,8 +156,8 @@ import Cookies from 'js-cookie';
     <div class="loginContainer">
       <h1>FutPlanner</h1>
       <h3>Admin Panel</h3>
-      <input v-model="formUsername" placeholder="presidenteEjemploFC" type="text" name="" id="">
-      <input v-model="formPassword" placeholder="··············" type="password" name="" id="">
+      <input v-model="formUsername" @keyup.enter="logIn()" placeholder="presidenteEjemploFC" type="text" name="" id="">
+      <input v-model="formPassword" @keyup.enter="logIn()" placeholder="··············" type="password" name="" id="">
       <div class="formError">{{ formError.error }}</div>
       <div class="forgot">Forgot password</div>
       <button @click="logIn()">Enter</button>
