@@ -28,7 +28,8 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
         player_editor_player: null,
         team_trainer_selector_mode: false,
         team_trainer_team: {},
-        team_player_selector_mode: true, //DEBUG
+        team_player_selector_mode: false, //DEBUG
+        team_player_selector_team_id: null,
 
         new_team_form: {
           name: "",
@@ -252,6 +253,10 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
         }else {
           this.selected_team = id;
         }
+      },
+      openTeamPlayerSelector(team_id) {
+        this.team_player_selector_team_id = team_id;
+        this.team_player_selector_mode = true;
       }
     },
     computed: {
@@ -285,7 +290,7 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
     <TrainerSelector @trainer="setTeamTrainer"></TrainerSelector>
   </div>
   <div v-if="team_player_selector_mode" class="background_trainer">
-    <PlayerSelector @exitPlayer="restartTeamWindow"></PlayerSelector>
+    <PlayerSelector :team_id="team_player_selector_team_id" @exitPlayer="restartTeamWindow"></PlayerSelector>
   </div>
 
 
@@ -367,7 +372,7 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
               <div>{{team.sub_category.sub_category_name}}</div>
             </div>
             <div v-if="team.id === selected_team" class="selected_team">
-              <TeamData @restartTeamWindow="restartTeamWindow" @openTeamTrainers="openTeamTrainers" @editPlayer="editPlayer" :team_id="team.id"></TeamData>
+              <TeamData @addPlayer="openTeamPlayerSelector" @restartTeamWindow="restartTeamWindow" @openTeamTrainers="openTeamTrainers" @editPlayer="editPlayer" :team_id="team.id"></TeamData>
             </div>
           </div>
       </div>

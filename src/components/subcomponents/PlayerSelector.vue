@@ -6,7 +6,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
   export default {
     name: 'PlayerSelector',
     props: {
-      club: Object
+      team_id: Number
     },
     data() {
       return {
@@ -66,7 +66,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
           <img :src="renderPic(null)">
           <div class="ps_flname">
             <div>NOMBRE</div>
-            <div>Apellido</div>
+            <div>Apellido {{ team_id }}</div>
           </div>
         </div>
         <div class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>

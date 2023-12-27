@@ -106,6 +106,9 @@ import LoadingBall from '../loading/LoadingBall.vue';
           }
         }, 500);
       },
+      async addPlayer(team_id) {
+        this.$emit('addPlayer', team_id);
+      },
     },
     computed: {
       getUser() {
@@ -146,7 +149,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
       </div>
       <div class="data_box">
         <div class="data_heading">
-          <div class="button">Añadir Jugador</div>
+          <div @click="addPlayer(team_id)" class="button">Añadir Jugador</div>
         </div>
         <div class="players_row" style="font-weight: bold;">
           <div>Numero</div>
