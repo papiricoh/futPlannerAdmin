@@ -14,6 +14,10 @@ import LoadingBall from '../loading/LoadingBall.vue';
 
         user: null,
 
+        players: [],
+        selected_players: [],
+
+        generalError: {error: null},
       }
     },
     watch: {
@@ -23,13 +27,38 @@ import LoadingBall from '../loading/LoadingBall.vue';
       exit() {
         this.$emit('exitPlayer');
       },
+      async loadPlayersData() {
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          team_id: this.team_id
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/getAvariablePlayers/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+
+          this.players = data;
+          this.loading = false;
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
           if (this.getUser.id != 0) {
             clearInterval(intervalId);
             this.user = this.getUser;
-            //this.form_data = JSON.parse(JSON.stringify(this.player));
-            this.loading = false
+            await this.loadPlayersData();
           }
         }, 1000);
       },
@@ -61,12 +90,12 @@ import LoadingBall from '../loading/LoadingBall.vue';
       <LoadingBall></LoadingBall>
     </div>
     <div v-else class="ps_data_container">
-      <div class="ps_player_box">
+      <div class="ps_player_box" v-for="p in players">
         <div class="ps_name">
-          <img :src="renderPic(null)">
+          <img :src="renderPic(p.photo_url)">
           <div class="ps_flname">
-            <div>NOMBRE</div>
-            <div>Apellido {{ team_id }}</div>
+            <div>{{p.first_name}}</div>
+            <div>{{p.last_name}}</div>
           </div>
         </div>
         <div class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>
