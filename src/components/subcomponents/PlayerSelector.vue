@@ -33,6 +33,12 @@ import LoadingBall from '../loading/LoadingBall.vue';
           }
         }, 1000);
       },
+      renderPic(pic) {
+        if(!pic || pic == "") {
+          return "/profile_placeholder.jpg";
+        }
+        return pic;
+      }
     },
     computed: {
       getUser() {
@@ -56,8 +62,14 @@ import LoadingBall from '../loading/LoadingBall.vue';
     </div>
     <div v-else class="ps_data_container">
       <div class="ps_player_box">
-        <div></div>
-        <div></div>
+        <div class="ps_name">
+          <img :src="renderPic(null)">
+          <div class="ps_flname">
+            <div>NOMBRE</div>
+            <div>Apellido</div>
+          </div>
+        </div>
+        <div class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>
       </div>
     </div>
     <div class="ok_button">Confirmar cambios</div>
@@ -138,6 +150,49 @@ import LoadingBall from '../loading/LoadingBall.vue';
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.ps_check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1B5E20;
+  padding: 2rem;
+  font-size: 2rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  transition: .4s;
+  cursor: pointer;
+}
+
+.ps_check:hover {
+  background-color: #1B5E20;
+  color: white;
+}
+.ps_check:active {
+  background-color: transparent;
+  color: black;
+}
+
+.ps_name {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.ps_flname {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .25rem;
+}
+
+.ps_name > img {
+  height: 6rem;
+  width: 6rem;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar {
