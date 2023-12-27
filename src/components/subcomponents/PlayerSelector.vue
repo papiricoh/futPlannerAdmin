@@ -55,7 +55,10 @@ import LoadingBall from '../loading/LoadingBall.vue';
       <LoadingBall></LoadingBall>
     </div>
     <div v-else class="ps_data_container">
-
+      <div class="ps_player_box">
+        <div></div>
+        <div></div>
+      </div>
     </div>
     <div class="ok_button">Confirmar cambios</div>
   </div>
@@ -115,7 +118,6 @@ import LoadingBall from '../loading/LoadingBall.vue';
   display: grid;
   height: 100%;
   box-sizing: border-box;
-  background-color: grey;
   overflow-y: scroll;
   grid-template-columns: 1fr 1fr;
   padding: .4rem;
@@ -125,6 +127,21 @@ import LoadingBall from '../loading/LoadingBall.vue';
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.ps_player_box {
+  height: 10rem;
+  box-sizing: border-box;
+  border-radius: .6rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.315);
+  border: 3px solid #1B5E20;
+  padding: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 </style>
 
