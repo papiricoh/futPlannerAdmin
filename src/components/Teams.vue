@@ -204,7 +204,7 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
         this.new_team_form.trainer = trainer;
         this.trainer_selector_mode = false;
       },
-      async setTeamTrainer() {
+      async setTeamTrainer(trainer) {
         if(this.team_trainer_team == null) {
           const team_id = this.selected_team;
           this.selected_team = null;
@@ -222,8 +222,8 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
           body: JSON.stringify({
             user_id: this.getUser.id,
             token: this.getUser.last_token_key,
-            trainer: this.team_trainer_team,
-            team_id: this.selected_team
+            trainer: trainer,
+            team_id: this.team_trainer_team.id
           }),
         }).then(async response => response.json())
         .then(async data => {
