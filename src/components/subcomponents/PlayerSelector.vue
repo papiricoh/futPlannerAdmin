@@ -55,6 +55,36 @@ import LoadingBall from '../loading/LoadingBall.vue';
           this.generalError.error = "No conexion error: " + err.message;
         }
       },
+      async submitPlayers() {
+        if(this.selected_players.length == 0) {
+          this.exit();
+          return;
+        }
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          team_id: this.team_id,
+          player_list: this.selected_players
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/addPlayersToTeam/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+
+          this.exit();
+
+        } catch (err) {
+          this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
           if (this.getUser.id != 0) {
@@ -126,7 +156,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
         <div @click="selected_players.push(p)" v-else class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>
       </div>
     </div>
-    <div class="ok_button">Confirmar cambios</div>
+    <div @click="submitPlayers()" class="ok_button">Confirmar cambios</div>
   </div>
 </template>
 
