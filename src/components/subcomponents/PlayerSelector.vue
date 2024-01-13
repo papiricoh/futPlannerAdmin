@@ -17,6 +17,8 @@ import LoadingBall from '../loading/LoadingBall.vue';
         players: [],
         selected_players: [],
 
+        search_input: null,
+
         generalError: {error: null},
       }
     },
@@ -67,11 +69,30 @@ import LoadingBall from '../loading/LoadingBall.vue';
           return "/profile_placeholder.jpg";
         }
         return pic;
+      },
+      removePlayer(p) {
+        for (const player of this.selected_players) {
+          if(p.id == player.id) {
+            this.selected_players.splice(this.selected_players.indexOf(player), 1);
+          }
+        }
       }
     },
     computed: {
       getUser() {
         return this.$store.getters.getUser;
+      },
+      renderSearch() {
+        if(this.search_input == null || this.search_input == "") {
+          return this.players;
+        } 
+        var r = []
+        for (const p of this.players) {
+          if(p.first_name.toUpperCase().includes(this.search_input.toUpperCase()) || p.last_name.toUpperCase().includes(this.search_input.toUpperCase())) {
+            r.push(p);
+          }
+        }
+        return r;
       }
     },
     async mounted() {
@@ -86,19 +107,23 @@ import LoadingBall from '../loading/LoadingBall.vue';
       <div class="ps_title_text">Selecionador de Jugadores</div>
       <div class="exit_button" @click="exit()">Salir</div>
     </div>
+    <div class="ps_search_cont">
+      <font-awesome-icon :icon="['fas', 'search']" />
+      <input placeholder="Buscar" v-model="search_input" type="text">
+    </div>
     <div v-if="loading" class="ps_data_container loading">
       <LoadingBall></LoadingBall>
     </div>
     <div v-else class="ps_data_container">
-      <div class="ps_player_box" v-for="p in players">
+      <div class="ps_player_box" v-for="p in renderSearch" :key="p.id">
         <div class="ps_name">
           <img :src="renderPic(p.photo_url)">
-          <div class="ps_flname">
-            <div>{{p.first_name}}</div>
-            <div>{{p.last_name}}</div>
+          <div style="font-size: larger; font-weight: bold;" class="ps_flname">
+            <div>{{p.first_name}} {{p.last_name}}</div>
           </div>
         </div>
-        <div class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>
+        <div @click="removePlayer(p)" v-if="selected_players.includes(p)" class="ps_check ps_check_ok"><font-awesome-icon :icon="['fas', 'check']" /></div>
+        <div @click="selected_players.push(p)" v-else class="ps_check"><font-awesome-icon :icon="['fas', 'check']" /></div>
       </div>
     </div>
     <div class="ok_button">Confirmar cambios</div>
@@ -108,7 +133,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
 <style scoped>
 .ps_container {
   width: 60rem;
-  height: 34rem;
+  height: 38rem;
   background-color: white;
   border-radius: .4rem;
   padding: .8rem;
@@ -202,6 +227,10 @@ import LoadingBall from '../loading/LoadingBall.vue';
   background-color: transparent;
   color: black;
 }
+.ps_check_ok {
+  background-color: #1B5E20;
+  color: white;
+}
 
 .ps_name {
   display: flex;
@@ -226,6 +255,22 @@ import LoadingBall from '../loading/LoadingBall.vue';
 
 ::-webkit-scrollbar {
   display: none;
+}
+.ps_search_cont {
+  align-self: center;
+  background-color: rgba(0, 0, 0, 0.068);
+  padding: .6rem;
+  width: 20rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: .4rem;
+}
+.ps_search_cont > input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  padding: .4rem;
 }
 </style>
 

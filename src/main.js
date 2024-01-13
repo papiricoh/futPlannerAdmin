@@ -8,11 +8,12 @@ import store from './store.js';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faCheck)
 library.add(faUserSecret)
+library.add(faSearch)
 
 const app = createApp(App)
 
