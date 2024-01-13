@@ -352,7 +352,7 @@ import PlayerSelector from './subcomponents/PlayerSelector.vue';
     </div>
     <div class="general_body" v-else>
       <div class="table_options">
-        <div></div>
+        <div style="font-size: 1.6rem; font-weight: bold;">Administrador de Equipos</div>
         <div @click="team_creator_mode = true" class="option_button">Añadir Equipo</div>
       </div>
       <div class="table">
