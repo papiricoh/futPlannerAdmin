@@ -139,8 +139,8 @@ import Cookies from 'js-cookie';
   <header>
     <div class="userCard">
       <img :src="user.photo_url" alt="">
-      <h2>{{user.username.charAt(0).toUpperCase() + user.username.substring(1)}}</h2>
-      <h5>{{user.first_name}} {{user.last_name}}</h5>
+      <h2>{{user.first_name}} {{user.last_name}}</h2>
+      <h5>{{user.username.charAt(0).toUpperCase() + user.username.substring(1)}}</h5>
     </div>
     <!--<div v-if="page == 'club'" class="headerButtonActive">Club</div>
     <div v-else @click="page = 'club', changeRouter('club')" class="headerButton">Club</div>-->
