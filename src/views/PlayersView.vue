@@ -11,6 +11,10 @@ import LoadingBall from '../components/loading/LoadingBall.vue';
         loading: true,
         user: {},
 
+        new_player_form: false,
+        players: [],
+        new_trainer_form: false,
+        trainers: [],
       }
     },
     methods: {
@@ -45,8 +49,31 @@ import LoadingBall from '../components/loading/LoadingBall.vue';
     <div class="pla_train_container" v-else>
       <div class="player_list">
         <div>Jugadores</div>
-        <div class="add_button"> + Añadir jugador</div>
-        
+        <div v-if="!new_player_form" class="add_button" @click="new_player_form = true"> + Añadir jugador</div>
+        <div class="new_form" v-else>
+          <hr>
+          <div class="f_username_c">
+            <b>Nombre de Usuario</b>
+            <input type="text" placeholder="Username">
+          </div>
+          <div class="f_username_c">
+            <b>Contraseña</b>
+            <input type="text" placeholder="***********">
+          </div>
+          <div class="f_username_c">
+            <b>Nombre</b>
+            <input type="text" placeholder="Juan">
+          </div>
+          <div class="f_username_c">
+            <b>1er Apellido</b>
+            <input type="text" placeholder="Perez">
+          </div>
+          <div class="f_username_c">
+            <b>Fecha nacimiento</b>
+            <input type="date" placeholder="01/01/2002">
+          </div>
+          <div class="add_button" @click=""> + Añadir jugador</div>
+        </div>
       </div>
       <div class="trainers_list">
         <div>Entrenadores</div>
@@ -122,5 +149,25 @@ main {
 .add_button:active {
   color: white;
   background-color: black;
+}
+.f_username_c {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 4rem;
+  gap: .6rem;
+}
+input {
+  font-size: 1.2rem;
+  width: 60%;
+  padding: .4rem 1rem;
+}
+input:focus-visible {
+  outline: none;
+}
+.new_form {
+  display: flex;
+  gap: .6rem;
+  flex-direction: column;
 }
 </style>
