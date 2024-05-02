@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 const store = createStore({
     state: {
         logged: false,
-        baseURL: "http://localhost:8080/api",
+        baseURL: "http://46.4.74.141:8080/api",
         user: {
             id: 0,
             username: "Username",

@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
       return {
         page: 'home',
 
-        baseURL: "http://localhost:8080/api",
+        baseURL: "http://46.4.74.141:8080/api",
 
         loginFase: true,
 
