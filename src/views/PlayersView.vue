@@ -87,7 +87,6 @@ import newUserForm from '../components/newUserForm.vue';
           <div>{{ player.username }}</div>
           <div>{{ player.first_name }}</div>
           <div>{{ player.last_name }}</div>
-          <div></div>
           <button>Eliminar</button>
         </div>
       </div>
@@ -100,7 +99,6 @@ import newUserForm from '../components/newUserForm.vue';
           <div>{{ trainer.username }}</div>
           <div>{{ trainer.first_name }}</div>
           <div>{{ trainer.last_name }}</div>
-          <div></div>
           <button>Eliminar</button>
         </div>
       </div>
@@ -177,7 +175,7 @@ main {
 }
 .user_box {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
 }
 </style>
