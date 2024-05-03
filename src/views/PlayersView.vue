@@ -1,5 +1,6 @@
 <script setup>
 import LoadingBall from '../components/loading/LoadingBall.vue';
+import newUserForm from '../components/newUserForm.vue';
 
 </script>
 
@@ -24,10 +25,40 @@ import LoadingBall from '../components/loading/LoadingBall.vue';
             clearInterval(intervalId);
             this.user = this.getUser;
             
-            this.loading = false;
+            //LOAD PLAYERS AND TRAINERS:
+            await this.reloadAll();
           }
         }, 500);
       },
+      async reloadAll() {
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/getAllUsers/owner`, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+
+          this.players = data.players;
+          this.trainers = data.trainers;
+          this.loading = false;
+
+        } catch (err) {
+          //TODO: this.generalError.error = "No conexion error: " + err.message;
+        }
+        this.new_trainer_form = false;
+        this.new_player_form = false;
+      }
     },
     computed: {
       getUser() {
@@ -50,35 +81,28 @@ import LoadingBall from '../components/loading/LoadingBall.vue';
       <div class="player_list">
         <div>Jugadores</div>
         <div v-if="!new_player_form" class="add_button" @click="new_player_form = true"> + Añadir jugador</div>
-        <div class="new_form" v-else>
-          <hr>
-          <div class="f_username_c">
-            <b>Nombre de Usuario</b>
-            <input type="text" placeholder="Username">
-          </div>
-          <div class="f_username_c">
-            <b>Contraseña</b>
-            <input type="text" placeholder="***********">
-          </div>
-          <div class="f_username_c">
-            <b>Nombre</b>
-            <input type="text" placeholder="Juan">
-          </div>
-          <div class="f_username_c">
-            <b>1er Apellido</b>
-            <input type="text" placeholder="Perez">
-          </div>
-          <div class="f_username_c">
-            <b>Fecha nacimiento</b>
-            <input type="date" placeholder="01/01/2002">
-          </div>
-          <div class="add_button" @click=""> + Añadir jugador</div>
+        <newUserForm @reload="reloadAll()" :type="'player'" :club_id="user.club_id" v-else></newUserForm>
+
+        <div v-for="player in players" class="user_box">
+          <div>{{ player.username }}</div>
+          <div>{{ player.first_name }}</div>
+          <div>{{ player.last_name }}</div>
+          <div></div>
+          <button>Eliminar</button>
         </div>
       </div>
       <div class="trainers_list">
         <div>Entrenadores</div>
-        <div class="add_button"> + Añadir entrenador</div>
+        <div v-if="!new_trainer_form" class="add_button" @click="new_trainer_form = true"> + Añadir entrenador</div>
+        <newUserForm @reload="reloadAll()" :type="'trainer'" :club_id="user.club_id" v-else></newUserForm>
 
+        <div v-for="trainer in trainers" class="user_box">
+          <div>{{ trainer.username }}</div>
+          <div>{{ trainer.first_name }}</div>
+          <div>{{ trainer.last_name }}</div>
+          <div></div>
+          <button>Eliminar</button>
+        </div>
       </div>
     </div>
   </main>
@@ -126,7 +150,8 @@ main {
 }
 .player_list > div:first-child, .trainers_list > div:first-child {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
+  margin: 0 1rem;
 }
 .player_list > div, .trainers_list > div {
   padding: .4rem;
@@ -136,7 +161,7 @@ main {
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   color: white;
-  height: 2rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,24 +175,9 @@ main {
   color: white;
   background-color: black;
 }
-.f_username_c {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 4rem;
-  gap: .6rem;
-}
-input {
-  font-size: 1.2rem;
-  width: 60%;
-  padding: .4rem 1rem;
-}
-input:focus-visible {
-  outline: none;
-}
-.new_form {
-  display: flex;
-  gap: .6rem;
-  flex-direction: column;
+.user_box {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  gap: 1rem;
 }
 </style>
