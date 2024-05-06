@@ -287,7 +287,7 @@ header {
   word-break: break-all;
   background-color: #1B5E20;
   box-shadow: 3px 0 8px rgba(0, 0, 0, 0.486);
-  color: rgb(255, 255, 255);
+  color: rgb(240, 240, 240);
 }
 
 </style>
