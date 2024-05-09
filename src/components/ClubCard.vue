@@ -24,6 +24,36 @@ import LoadingBall from '../components/loading/LoadingBall.vue';
         this.text_edit_input = this.club.club_name;
         this.text_edit = true;
       },
+      async submmitEdit() {
+        if(this.text_edit_input == "") {
+          return;
+        }
+        this.loading = true;
+        const postData = {
+          user_id: this.getUser.id,
+          token: this.getUser.last_token_key,
+          name: this.text_edit_input,
+        };
+        try {
+          const res = await fetch(`${this.$store.getters.getBaseURL}/changeClubName/owner`, {
+            method: "post",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postData),
+          });
+          if (!res.ok) {
+            throw new Error(`An error has occurred: ${res.status} - ${res.statusText}`);
+          }
+          const data = await res.json();
+          
+          await this.loadClub();
+          this.text_edit = false;
+
+        } catch (err) {
+          //TODO: this.generalError.error = "No conexion error: " + err.message;
+        }
+      },
       async checkUserLoaded() {
         const intervalId = await setInterval(async () => {
           if (this.getUser.id != 0) {
