@@ -10,10 +10,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { faSearch, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faSquareCheck } from '@fortawesome/free-regular-svg-icons'
 
 library.add(faCheck)
 library.add(faUserSecret)
 library.add(faSearch)
+library.add(faPenToSquare)
+library.add(faSquareCheck)
 
 const app = createApp(App)
 

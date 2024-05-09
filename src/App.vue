@@ -142,8 +142,8 @@ import Cookies from 'js-cookie';
       <h2>{{user.first_name}} {{user.last_name}}</h2>
       <h5>{{user.username.charAt(0).toUpperCase() + user.username.substring(1)}}</h5>
     </div>
-    <!--<div v-if="page == 'club'" class="headerButtonActive">Club</div>
-    <div v-else @click="page = 'club', changeRouter('club')" class="headerButton">Club</div>-->
+    <div v-if="page == 'club'" class="headerButtonActive">Dashboard</div>
+    <div v-else @click="page = 'club', changeRouter('')" class="headerButton">Dashboard</div>
     <div v-if="page == 'teams'" class="headerButtonActive">Equipos</div>
     <div v-else @click="page = 'teams', changeRouter('teams')" class="headerButton">Equipos</div>
     <div v-if="page == 'users'" class="headerButtonActive">Usuarios</div>
