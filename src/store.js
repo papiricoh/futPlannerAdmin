@@ -3,7 +3,9 @@ import { createStore } from 'vuex';
 const store = createStore({
     state: {
         logged: false,
+        rootURL: "http://46.4.74.141:8080",
         baseURL: "http://46.4.74.141:8080/api",
+        uploadURL: "http://46.4.74.141:8080/upload",
         user: {
             id: 0,
             username: "Username",
@@ -30,6 +32,8 @@ const store = createStore({
     getters: {
         getLogged: state => state.logged,
         getBaseURL: state => state.baseURL,
+        getUploadURL: state => state.uploadURL,
+        getRootURL: state => state.rootURL,
         getUser: state => state.user
     }
 });
