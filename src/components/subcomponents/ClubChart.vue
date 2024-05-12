@@ -107,7 +107,7 @@ export default {
             
             await this.getClubAnalytics()
           }
-        }, 400);
+        }, 1000);
       },
     },
     computed: {
@@ -122,12 +122,21 @@ export default {
 </script>
 
 <template>
-  <div>
-    <Chart :options="chartOptions"></Chart>
+  <div class="z_container">
+    <LoadingBall class="z_loading" v-if="loading"></LoadingBall>
+    <Chart style="width: 100%;" :options="chartOptions"></Chart>
   </div>
 </template>
 
 <style scoped>
-
+.z_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.z_loading {
+  z-index: 1;
+  position: absolute;
+}
 </style>
 
