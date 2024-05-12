@@ -87,7 +87,7 @@ import newUserForm from '../components/newUserForm.vue';
           <div>{{ player.username }}</div>
           <div>{{ player.first_name }}</div>
           <div>{{ player.last_name }}</div>
-          <button>Eliminar</button>
+          
         </div>
       </div>
       <div class="trainers_list">
@@ -99,7 +99,7 @@ import newUserForm from '../components/newUserForm.vue';
           <div>{{ trainer.username }}</div>
           <div>{{ trainer.first_name }}</div>
           <div>{{ trainer.last_name }}</div>
-          <button>Eliminar</button>
+          
         </div>
       </div>
     </div>
