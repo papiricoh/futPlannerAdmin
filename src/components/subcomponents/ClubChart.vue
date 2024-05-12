@@ -3,16 +3,44 @@ import LoadingBall from '../loading/LoadingBall.vue';
 </script>
 
 <script>
-  export default {
-    name: 'PlayerData',
+import { Chart } from 'highcharts-vue';
+export default {
+    components: {
+        highcharts: Chart
+    },
+    name: 'ClubChart',
     props: {
-      player: Object //player and player.team
+
     },
     data() {
       return {
         loading: true,
         
-        
+        chartOptions: {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Vision general'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+                title: {
+                    text: 'Media'
+                }
+            },
+            series: [
+                /*{
+                name: 'Tokio',
+                data: [4]
+                }, {
+                name: 'Nueva York',
+                data: [42]
+                }*/
+            ]
+        }
       }
     },
     watch: {
@@ -42,7 +70,7 @@ import LoadingBall from '../loading/LoadingBall.vue';
 
 <template>
   <div>
-    
+    <Chart :options="chartOptions"></Chart>
   </div>
 </template>
 
