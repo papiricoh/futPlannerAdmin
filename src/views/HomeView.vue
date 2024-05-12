@@ -1,5 +1,6 @@
 <script setup>
 import ClubCard from '../components/ClubCard.vue';
+import ClubChart from '../components/subcomponents/ClubChart.vue';
 </script>
 
 <script>
@@ -24,6 +25,9 @@ import ClubCard from '../components/ClubCard.vue';
       <div class="hv_body">Desde aqui puedes organizar tanto los usuarios de tu club como asignar a los jugadores y entrenadores a sus equipos, crear equipos nuevos y modificarlos.</div>
       <div class="hv_body">Añade, modifica o crea equipos en el club usando el apartado EQUIPOS</div>
       <div class="hv_body">Añade, modifica o crea usuarios en el club usando el apartado USUARIOS</div>
+    </div>
+    <div>
+      <ClubChart></ClubChart>
     </div>
   </main>
 </template>
